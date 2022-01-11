@@ -1,4 +1,5 @@
 import React from "react";
+import "./Dashboard.css";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -23,6 +24,7 @@ function Dashboard() {
   );
   const data = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    responsive: true,
     datasets: [
       {
         label: "# of Votes",
@@ -48,15 +50,21 @@ function Dashboard() {
     ],
   };
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ width: "25vw" }}>
-        <Pie data={data} />
-      </div>
-      <div style={{ width: "25vw" }}>
-        <Doughnut data={data} />
-      </div>
-      <div style={{ width: "25vw" }}>
-        <Bar data={data} />
+    <div style={{ height: "50%" }}>
+      <div className="chart-container">
+        <div>
+          <Pie className="chart" data={data} />
+        </div>
+        <div>
+          <Doughnut data={data} />
+        </div>
+
+        <div>
+          <Pie data={data} />
+        </div>
+        <div>
+          <Doughnut style={{ height: "20px" }} data={data} />
+        </div>
       </div>
     </div>
   );
