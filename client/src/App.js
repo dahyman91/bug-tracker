@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
+import SignUp from "./Pages/Signup";
+import Dashboard from "./Pages/Dashboard";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    // auto-login
+    fetch("/api/me").then((r) => {
+      if (r.ok) {
+        r.json().then((user) => {
+          setCurrentUser(user);
+        });
+      }
+    });
+  }, []);
+  console.log(currentUser);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route exact path="/">
+          <SignUp setCurrentUser={setCurrentUser} />
+        </Route>
+        <Route exact currentUser={currentUser} path="/dashboard">
+          <Dashboard />
+        </Route>
+      </Switch>
     </div>
   );
 }
