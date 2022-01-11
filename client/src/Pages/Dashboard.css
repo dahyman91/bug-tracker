@@ -1,12 +1,13 @@
 .chart-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 30%);
+  /* grid-template-rows: repeat(2, 1fr); */
   width: 70vw;
-  height: 80vh;
+  height: 10vh;
   margin: auto;
+  justify-content: center;
 }
 
 .chart {
-  height: 10vh;
+  height: 10%;
 }

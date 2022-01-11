@@ -17,7 +17,7 @@ export default function Navbar() {
       value={value}
       onChange={handleChange}
       aria-label="icon label tabs example"
-      style={{ textAlign: "center" }}
+      style={{ textAlign: "center", marginBottom: "2vh" }}
       centered
     >
       <Tab icon={<PhoneIcon />} label="RECENTS" />

@@ -24,7 +24,7 @@ function Dashboard() {
   );
   const data = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    responsive: true,
+
     datasets: [
       {
         label: "# of Votes",
@@ -50,10 +50,10 @@ function Dashboard() {
     ],
   };
   return (
-    <div style={{ height: "50%" }}>
+    <div>
       <div className="chart-container">
-        <div>
-          <Pie className="chart" data={data} />
+        <div className="chart">
+          <Pie data={data} />
         </div>
         <div>
           <Doughnut data={data} />
