@@ -63,7 +63,7 @@ function Dashboard() {
           <Pie data={data} />
         </div>
         <div>
-          <Doughnut style={{ height: "20px" }} data={data} />
+          <Doughnut data={data} />
         </div>
       </div>
     </div>

@@ -9,15 +9,15 @@ import LogIn from "./Pages/Login";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  useEffect(() => {
-    fetch("/api/me").then((r) => {
-      if (r.ok) {
-        r.json().then((user) => {
-          setCurrentUser(user);
-        });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api/me").then((r) => {
+  //     if (r.ok) {
+  //       r.json().then((user) => {
+  //         setCurrentUser(user);
+  //       });
+  //     }
+  //   });
+  // }, []);
 
   if (!currentUser)
     return (

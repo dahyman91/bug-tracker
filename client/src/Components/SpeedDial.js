@@ -9,10 +9,8 @@ import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
 
 const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
-  { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
+  { icon: <FileCopyIcon />, name: "Add Ticket" },
+  { icon: <SaveIcon />, name: "Add Project" },
 ];
 
 export default function SideNav() {

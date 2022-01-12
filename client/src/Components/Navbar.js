@@ -20,9 +20,20 @@ export default function Navbar() {
       style={{ textAlign: "center", marginBottom: "2vh" }}
       centered
     >
-      <Tab icon={<PhoneIcon />} label="RECENTS" />
-      <Tab icon={<FavoriteIcon />} label="FAVORITES" />
-      <Tab icon={<PersonPinIcon />} label="NEARBY" />
+      <Tab
+        style={{ position: "absolute", left: "5px" }}
+        icon={<PhoneIcon />}
+        label="Log Out"
+      />
+      <Tab icon={<PhoneIcon />} label="Dashboard" />
+      <Tab icon={<FavoriteIcon />} label="Manage Roles" />
+      <Tab icon={<PersonPinIcon />} label="My Projects" />
+      <Tab icon={<PersonPinIcon />} label="My Tickets" />
+      <Tab
+        icon={<PersonPinIcon />}
+        style={{ position: "absolute", right: "5px" }}
+        label="Profile"
+      />
     </Tabs>
   );
 }
