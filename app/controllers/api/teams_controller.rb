@@ -8,6 +8,11 @@ class Api::TeamsController < ApplicationController
     render json: Team.all
   end
 
+  def show
+    team = Team.find(params[:id])
+    render json: team
+  end
+
   private
 
   def team_params

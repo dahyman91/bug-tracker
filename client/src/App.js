@@ -92,7 +92,7 @@ function App() {
           </Route>
           <Route exact path="/teams">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Teams currentUser={currentUser} />
+            <Teams setCurrentUser={setCurrentUser} currentUser={currentUser} />
             <SideNav />
           </Route>
           <Route exact path="/projects">
