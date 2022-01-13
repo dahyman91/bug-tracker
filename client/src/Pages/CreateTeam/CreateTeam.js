@@ -17,10 +17,14 @@ function CreateTeam({ currentUser }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const steps = ["Add Team Details", "Select Members", "Review/Add Team"];
 
-  useEffect(() => {
+  function fetchUsers() {
     fetch("/api/users")
       .then((r) => r.json())
       .then((users) => setAvailableUsers(users));
+  }
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   function handleSubmit(teamName, teamDescription, selectedUsers) {
@@ -51,7 +55,14 @@ function CreateTeam({ currentUser }) {
             }),
           });
         });
-      });
+      })
+
+      .then(
+        fetchUsers(),
+        setTeamDescription(""),
+        setTeamName(""),
+        setSelectedUsers([])
+      );
   }
 
   let submitParams = [teamName, teamDescription, selectedUsers];

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Accordion from "@mui/material/Accordion";
@@ -9,19 +9,27 @@ import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default function Teams({ currentUser, setCurrentUser }) {
+export default function Teams({ setCurrentUser }) {
+  const [teams, setTeams] = useState([]);
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
           setCurrentUser(user);
+          setTeams(user.teams);
         });
       }
     });
   }, []);
+
+  function handleRemoveTeam(id) {
+    const updatedTeams = teams.filter((t) => t.id !== id);
+    setTeams(updatedTeams);
+  }
+
   return (
     <div style={{ width: "70%", margin: "auto" }}>
-      {currentUser.teams.map((team) => (
+      {teams.map((team) => (
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -52,6 +60,7 @@ export default function Teams({ currentUser, setCurrentUser }) {
                   </ListItem>
                 );
               })}
+              <button onClick={() => handleRemoveTeam(team.id)}>delete</button>
             </List>
           </AccordionDetails>
         </Accordion>
