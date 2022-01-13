@@ -1,4 +1,6 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -34,14 +36,32 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function LogIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+export default function LogIn({ setCurrentUser, currentUser }) {
+  let history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }).then((r) => {
+      setIsLoading(false);
+      if (r.ok) {
+        r.json().then((user) => {
+          setCurrentUser(user);
+          history.push("/dashboard");
+        });
+      } else {
+        r.json().then((err) => console.log(err.errors));
+      }
     });
   };
 
@@ -78,6 +98,8 @@ export default function LogIn() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
               autoFocus
             />
             <TextField
@@ -86,6 +108,8 @@ export default function LogIn() {
               fullWidth
               name="password"
               label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -103,13 +127,8 @@ export default function LogIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

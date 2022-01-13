@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     resources :roles
     resources :projects
     resources :comments
+    resources :memberships
+    resources :teams, only: %i[index create]
     post '/login', to: 'sessions#create'
     get '/auth', to: 'users#show'
     get '/me', to: 'users#show'
