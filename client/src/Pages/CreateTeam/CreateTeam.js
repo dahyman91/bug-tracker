@@ -51,7 +51,7 @@ function CreateTeam({ currentUser }) {
             body: JSON.stringify({
               user_id: selectedUser.id,
               team_id: teamId,
-              is_admin: selectedUser.id === currentUser.id ? true : false,
+              "is_admin?": selectedUser.id === currentUser.id ? true : false,
             }),
           });
         });

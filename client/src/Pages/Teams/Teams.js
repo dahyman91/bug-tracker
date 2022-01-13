@@ -11,16 +11,20 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function Teams({ setCurrentUser }) {
   const [teams, setTeams] = useState([]);
+  const [adminTeams, setAdminTeams] = useState([]);
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
           setCurrentUser(user);
           setTeams(user.teams);
+          setAdminTeams(user.admin_teams.map((team) => team.team_id));
         });
       }
     });
   }, []);
+
+  // useEffect(() => {}, []);
 
   function handleRemoveTeam(id) {
     const updatedTeams = teams.filter((t) => t.id !== id);
@@ -38,6 +42,7 @@ export default function Teams({ setCurrentUser }) {
           >
             <Typography>{team.name}</Typography>
           </AccordionSummary>
+          {adminTeams.includes(team.id) && <Typography>admin</Typography>}
           <AccordionDetails>
             <Typography>{team.description}</Typography>
             <List dense={true}>
@@ -49,6 +54,18 @@ export default function Teams({ setCurrentUser }) {
                       primary={`${user.first_name} ${user.last_name}`}
                       secondary={user.email}
                     />
+                    {adminTeams.includes(team.id) && (
+                      <button
+                        onClick={() => {
+                          team.users = team.users.filter(
+                            (u) => u.id !== user.id
+                          );
+                          console.log(team.users);
+                        }}
+                      >
+                        remove member
+                      </button>
+                    )}
                   </ListItem>
                 );
               })}
@@ -60,7 +77,9 @@ export default function Teams({ setCurrentUser }) {
                   </ListItem>
                 );
               })}
-              <button onClick={() => handleRemoveTeam(team.id)}>delete</button>
+              <button onClick={() => handleRemoveTeam(team.id)}>
+                Leave Team
+              </button>
             </List>
           </AccordionDetails>
         </Accordion>

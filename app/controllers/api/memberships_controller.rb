@@ -9,6 +9,12 @@ class Api::MembershipsController < ApplicationController
     render json: Membership.all
   end
 
+  def show
+    user = User.find(session[:user_id])
+    membership = user.memberships.find_by(team_id: params[:id])
+    render json: membership
+  end
+
   private
 
   def membership_params

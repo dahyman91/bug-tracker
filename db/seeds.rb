@@ -7,4 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 puts "destorying users"
-User.destroy_all
+Team.destroy_all
+
+puts "destroying memberships"
+Membership.destroy_all

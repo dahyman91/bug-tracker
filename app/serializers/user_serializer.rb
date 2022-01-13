@@ -1,4 +1,8 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :first_name, :last_name, :email
+  attributes :id, :first_name, :last_name, :email, :admin_teams
   has_many :teams, through: :memberships
+
+  def admin_teams
+    object.memberships.where(is_admin?: true)
+  end
 end
