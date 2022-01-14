@@ -22,7 +22,6 @@ function CreateTeam({ currentUser }) {
       .then((r) => r.json())
       .then((users) => setAvailableUsers(users));
   }
-
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -190,7 +189,6 @@ function CreateTeam({ currentUser }) {
                 id="outlined-basic"
                 label="Team Name"
                 variant="outlined"
-                onChange={(e) => setTeamName(e.target.value)}
                 value={teamName}
                 disabled
               />
@@ -198,7 +196,6 @@ function CreateTeam({ currentUser }) {
               <TextField
                 id="outlined-multiline-flexible"
                 label="Team Description"
-                onChange={(e) => setTeamDescription(e.target.value)}
                 value={teamDescription}
                 multiline
                 rows={4}

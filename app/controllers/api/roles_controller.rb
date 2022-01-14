@@ -2,7 +2,7 @@ class Api::RolesController < ApplicationController
   skip_before_action :authorize, only: %i[show index]
 
   def index
-    render json: role.all
+    render json: Role.all
   end
 
   def show
@@ -23,7 +23,7 @@ class Api::RolesController < ApplicationController
 
   private
 
-  def commment_params
+  def role_params
     params.permit(:name, :user_id, :project_id)
   end
 end

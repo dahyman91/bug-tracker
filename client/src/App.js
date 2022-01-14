@@ -97,7 +97,10 @@ function App() {
           </Route>
           <Route exact path="/projects">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Projects currentUser={currentUser} />
+            <Projects
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
             <SideNav />
           </Route>
         </Switch>

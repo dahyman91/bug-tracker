@@ -12,6 +12,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export default function Teams({ setCurrentUser }) {
   const [teams, setTeams] = useState([]);
   const [adminTeams, setAdminTeams] = useState([]);
+
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
@@ -30,6 +31,8 @@ export default function Teams({ setCurrentUser }) {
     const updatedTeams = teams.filter((t) => t.id !== id);
     setTeams(updatedTeams);
   }
+
+  // function duplicateTeam(id) {}
 
   return (
     <div style={{ width: "70%", margin: "auto" }}>
@@ -55,16 +58,19 @@ export default function Teams({ setCurrentUser }) {
                       secondary={user.email}
                     />
                     {adminTeams.includes(team.id) && (
-                      <button
-                        onClick={() => {
-                          team.users = team.users.filter(
-                            (u) => u.id !== user.id
-                          );
-                          console.log(team.users);
-                        }}
-                      >
-                        remove member
-                      </button>
+                      <>
+                        <button
+                          onClick={() => {
+                            team.users = team.users.filter(
+                              (u) => u.id !== user.id
+                            );
+                            console.log(team.users);
+                          }}
+                        >
+                          remove member
+                        </button>
+                        <button>make admin</button>
+                      </>
                     )}
                   </ListItem>
                 );

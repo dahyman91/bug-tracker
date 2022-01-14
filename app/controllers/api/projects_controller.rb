@@ -23,7 +23,7 @@ class Api::ProjectsController < ApplicationController
   
   private
 
-  def commment_params
-    params.permit(:name, :description)
+  def project_params
+    params.permit(:name, :description, :team_id)
   end
 end
