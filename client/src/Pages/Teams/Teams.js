@@ -25,17 +25,14 @@ export default function Teams({ setCurrentUser }) {
     });
   }, []);
 
-  // useEffect(() => {}, []);
-
   function handleRemoveTeam(id) {
     const updatedTeams = teams.filter((t) => t.id !== id);
     setTeams(updatedTeams);
   }
 
-  // function duplicateTeam(id) {}
-
   return (
     <div style={{ width: "70%", margin: "auto" }}>
+      <Typography>My Teams</Typography>
       {teams.map((team) => (
         <Accordion>
           <AccordionSummary

@@ -18,7 +18,7 @@ export default function AddItemStepper({
   const [skipped, setSkipped] = useState(new Set());
 
   const isStepOptional = (step) => {
-    return step === 1;
+    return false;
   };
 
   const isStepSkipped = (step) => {
