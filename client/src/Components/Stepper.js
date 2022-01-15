@@ -71,7 +71,7 @@ export default function AddItemStepper({
   }
 
   return (
-    <Box sx={{ width: "80%", margin: "auto" }}>
+    <Box className="box" sx={{ width: "80%", height: "80%", margin: "0 auto" }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};

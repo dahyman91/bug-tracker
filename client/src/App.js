@@ -74,7 +74,10 @@ function App() {
           </Route>
           <Route exact path="/create-ticket">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <CreateTicket currentUser={currentUser} />
+            <CreateTicket
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
             <SideNav />
           </Route>
 

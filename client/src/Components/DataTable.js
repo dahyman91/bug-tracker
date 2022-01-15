@@ -9,7 +9,7 @@ export default function DataTable({ columns, rows, checkboxSelection, width }) {
           <DataGrid
             rows={rows}
             columns={columns}
-            pageSize={5}
+            pageSize={10}
             rowsPerPageOptions={[10]}
             checkboxSelection={checkboxSelection}
             autoHeight

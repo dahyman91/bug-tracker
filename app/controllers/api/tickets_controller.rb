@@ -22,7 +22,7 @@ class Api::TicketsController < ApplicationController
   end
   private
 
-  def commment_params
+  def ticket_params
     params.permit(:assignee_id, :submitter_id, :project_id, :priority, :type, :status, :title, :description, :files, :category)
   end
 end

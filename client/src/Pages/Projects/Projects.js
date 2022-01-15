@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./Projects.css";
+import DataTable from "../../Components/DataTable";
 
 function Projects({ currentUser, setCurrentUser }) {
   useEffect(() => {
@@ -11,17 +12,26 @@ function Projects({ currentUser, setCurrentUser }) {
       }
     });
   }, []);
+  const columns = [
+    { field: "id", headerName: "Project ID", width: 135 },
+    { field: "name", headerName: "Project Name", width: 200 },
+    { field: "description", headerName: "Project Description", width: 450 },
+  ];
   const projects = [];
   currentUser.teams.map((team) =>
     team.projects.map((project) => projects.push(project))
   );
-  console.log(projects);
 
   return (
     <div>
-      {projects.map((project) => {
-        return <p>{project.name}</p>;
-      })}
+      {projects && (
+        <DataTable
+          columns={columns}
+          rows={projects}
+          checkboxSelection={false}
+          width={"50%"}
+        />
+      )}
     </div>
   );
 }

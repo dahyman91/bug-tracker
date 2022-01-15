@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./CreateProject.css";
 import AddItemStepper from "../../Components/Stepper";
 import Stack from "@mui/material/Stack";
@@ -16,11 +16,17 @@ function CreateProject({ currentUser }) {
   const [roles, setRoles] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
+  const [roleAssignments, setRoleAssignments] = useState([]);
 
   const steps = ["Add Project Details", "Assign Roles", "Review/Add Project"];
   const roleOptions = ["Project Lead", "Project Contributor"];
 
   const teams = currentUser.teams;
+
+  useEffect(() => {
+    let roleAssignments = roles.filter((role) => role.role !== "Not Assigned");
+    setRoleAssignments(roleAssignments);
+  }, [roles]);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -56,6 +62,8 @@ function CreateProject({ currentUser }) {
           value={projectName}
         />
         <Autocomplete
+          disableClearable
+          disablePortal
           id="combo-box-demo"
           options={teams}
           getOptionLabel={(option) => option.name}
@@ -95,50 +103,59 @@ function CreateProject({ currentUser }) {
   function secondStep() {
     return (
       <>
-        <Box justifyContent="center" style={{ display: "flex" }}>
-          <Autocomplete
-            id="combo-box-demo"
-            options={users}
-            getOptionLabel={(option) =>
-              `${option.first_name} ${option.last_name}`
-            }
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Team Member" variant="outlined" />
+        {users && (
+          <Box justifyContent="center" style={{ display: "flex" }}>
+            <Autocomplete
+              id="combo-box-demo"
+              options={users}
+              getOptionLabel={(option) =>
+                `${option.first_name} ${option.last_name}`
+              }
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Team Member" variant="outlined" />
+              )}
+              onChange={(event, newValue) => {
+                setSelectedUser(newValue, null, " ");
+              }}
+            />
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="combo-box-demo"
+              options={roleOptions}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Project Role"
+                  variant="outlined"
+                />
+              )}
+              onChange={(event, newValue) => {
+                setSelectedRole(newValue);
+              }}
+            />
+            {selectedRole && selectedUser && (
+              <button
+                onClick={() => {
+                  const updatedRoles = roles.map((obj) => {
+                    if (obj.id === selectedUser.id) {
+                      return { ...obj, role: selectedRole };
+                    }
+                    return obj;
+                  });
+                  setRoles(updatedRoles);
+                }}
+              >
+                Submit Role
+              </button>
             )}
-            onChange={(event, newValue) => {
-              setSelectedUser(newValue, null, " ");
-            }}
-          />
-          <Autocomplete
-            id="combo-box-demo"
-            options={roleOptions}
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Project Role" variant="outlined" />
-            )}
-            onChange={(event, newValue) => {
-              setSelectedRole(newValue);
-            }}
-          />
-          <button
-            onClick={() => {
-              const updatedRoles = roles.map((obj) => {
-                if (obj.id === selectedUser.id) {
-                  return { ...obj, role: selectedRole };
-                }
-
-                return obj;
-              });
-              setRoles(updatedRoles);
-            }}
-          >
-            Submit Role
-          </button>
-        </Box>
+          </Box>
+        )}
         <DataTable
           columns={columns}
-          rows={roles}
+          rows={roleAssignments}
           checkboxSelection={false}
           width="52%"
         />
@@ -181,7 +198,7 @@ function CreateProject({ currentUser }) {
           <Grid textAlign="center" item style={{ width: "55%" }}>
             <DataTable
               columns={columns}
-              rows={roles}
+              rows={roleAssignments}
               checkboxSelection={false}
               // width="52%"
             />
@@ -210,7 +227,6 @@ function CreateProject({ currentUser }) {
         let roleAssignments = roles.filter(
           (role) => role.role !== "Not Assigned"
         );
-        console.log(roleAssignments);
         roleAssignments.map((roleAssignment) => {
           fetch("/api/roles", {
             method: "post",
