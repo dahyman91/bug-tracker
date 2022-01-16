@@ -113,12 +113,12 @@ function CreateTicket({ currentUser, setCurrentUser }) {
             value={ticketName}
           />
           <FormControl fullWidth>
-            <InputLabel id="user-select-label">Team</InputLabel>
+            <InputLabel id="user-select-label">Project</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={selectedProject}
-              label="Team"
+              label="Project"
               onChange={(e) => {
                 setSelectedProject(e.target.value);
               }}
