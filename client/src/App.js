@@ -90,7 +90,10 @@ function App() {
           </Route>
           <Route exact path="/tickets">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Tickets currentUser={currentUser} />
+            <Tickets
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
             <SideNav />
           </Route>
           <Route exact path="/teams">

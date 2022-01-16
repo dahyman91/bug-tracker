@@ -48,7 +48,8 @@ function CreateProject({ currentUser }) {
         component="form"
         sx={{
           width: "40ch",
-          m: "auto",
+          m: "10% auto",
+          height: "40vh",
         }}
         spacing={2}
         noValidate
