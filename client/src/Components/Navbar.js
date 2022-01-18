@@ -6,7 +6,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 
-export default function Navbar({ setCurrentUser }) {
+export default function Navbar({ setCurrentUser, currentUser }) {
   const [value, setValue] = React.useState(0);
   let history = useHistory();
 
@@ -60,7 +60,7 @@ export default function Navbar({ setCurrentUser }) {
       <Tab
         icon={<PersonPinIcon />}
         style={{ position: "absolute", left: "5px" }}
-        label="Avatar"
+        label={currentUser.first_name}
       />
     </Tabs>
   );

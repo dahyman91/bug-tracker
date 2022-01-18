@@ -1,6 +1,7 @@
 import "./Tickets.css";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import { useHistory } from "react-router-dom";
 
 import { GridApi, GridCellValue } from "@mui/x-data-grid";
 
@@ -17,6 +18,8 @@ function Tickets({ currentUser, setCurrentUser }) {
   const [submittedTickets, setSubmittedTickets] = useState(null);
   const [openTickets, setOpenTickets] = useState(null);
   const [closedTickets, setClosedTickets] = useState(null);
+
+  let history = useHistory();
 
   function getNameById(id) {
     let user = users.filter((user) => user.id === id);
@@ -125,6 +128,7 @@ function Tickets({ currentUser, setCurrentUser }) {
     { field: "project", headerName: "Project", width: 200 },
     { field: "status", headerName: "Status", width: 100 },
     { field: "assignee", headerName: "Ticket Assigned to", width: 300 },
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "action",
       headerName: "View Details",
@@ -138,12 +142,12 @@ function Tickets({ currentUser, setCurrentUser }) {
 
           api
             .getAllColumns()
-            .filter((c) => c.field !== "__check__" && !!c)
+            .filter((c) => c.field === "id" && !!c)
             .forEach(
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
 
-          return alert(JSON.stringify(thisRow, null, 4));
+          history.push(`/ticket/${JSON.stringify(thisRow.id, null, 4)}`);
         };
 
         return <Button onClick={onClick}>Click</Button>;

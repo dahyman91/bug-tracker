@@ -11,6 +11,7 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import Tickets from "./Pages/Tickets/Tickets";
 import Teams from "./Pages/Teams/Teams";
 import Projects from "./Pages/Projects/Projects";
+import Project from "./Pages/Project/Project";
 
 // Speed Dial
 import CreateTeam from "./Pages/CreateTeam/CreateTeam";
@@ -110,6 +111,20 @@ function App() {
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
+            <SideNav />
+          </Route>
+
+          {/* Specific Product and Ticket Routes */}
+
+          <Route exact path="/project/:id">
+            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
+            <Project currentUser={currentUser} />
+            <SideNav />
+          </Route>
+
+          <Route exact path="/ticket/:id">
+            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
+            <div>ticket</div>
             <SideNav />
           </Route>
         </Switch>

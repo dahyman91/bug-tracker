@@ -4,4 +4,3 @@ class Project < ApplicationRecord
   has_many :users, through: :roles
   has_many :tickets, dependent: :destroy
 end
-
