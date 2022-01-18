@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
 
-function CreateTeam({ currentUser }) {
+function CreateTeam({ currentUser, setCurrentUser }) {
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
   const [availableUsers, setAvailableUsers] = useState([]);

@@ -11,3 +11,12 @@ Team.destroy_all
 
 puts "destroying memberships"
 Membership.destroy_all
+
+puts 'Destroying Projects'
+Project.destroy_all
+
+puts "destroying tickets"
+Ticket.destroy_all
+
+puts 'destroying users'
+User.destroy_all

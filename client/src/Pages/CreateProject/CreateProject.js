@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import DataTable from "../../Components/DataTable";
 import Grid from "@mui/material/Grid";
 
-function CreateProject({ currentUser }) {
+function CreateProject({ currentUser, setCurrentUser }) {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [team, setTeam] = useState(null);
@@ -27,6 +27,16 @@ function CreateProject({ currentUser }) {
     let roleAssignments = roles.filter((role) => role.role !== "Not Assigned");
     setRoleAssignments(roleAssignments);
   }, [roles]);
+
+  useEffect(() => {
+    fetch("/api/me").then((r) => {
+      if (r.ok) {
+        r.json().then((user) => {
+          setCurrentUser(user);
+        });
+      }
+    });
+  }, []);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },

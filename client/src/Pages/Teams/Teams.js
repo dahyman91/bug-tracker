@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import TeamAccordian from "../../Components/TeamAccordian";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Accordion from "@mui/material/Accordion";
@@ -9,11 +10,11 @@ import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default function Teams({ setCurrentUser }) {
+export default function Teams({ setCurrentUser, currentUser }) {
   const [teams, setTeams] = useState([]);
   const [adminTeams, setAdminTeams] = useState([]);
 
-  useEffect(() => {
+  function fetchInfo() {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
@@ -23,10 +24,14 @@ export default function Teams({ setCurrentUser }) {
         });
       }
     });
+  }
+  useEffect(() => {
+    fetchInfo();
   }, []);
 
   function handleRemoveTeam(id) {
     const updatedTeams = teams.filter((t) => t.id !== id);
+    fetch(`/api/destroy_membership/${currentUser.id}/${id}`);
     setTeams(updatedTeams);
   }
 
@@ -34,58 +39,11 @@ export default function Teams({ setCurrentUser }) {
     <div style={{ width: "70%", margin: "auto" }}>
       <Typography>My Teams</Typography>
       {teams.map((team) => (
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>{team.name}</Typography>
-          </AccordionSummary>
-          {adminTeams.includes(team.id) && <Typography>admin</Typography>}
-          <AccordionDetails>
-            <Typography>{team.description}</Typography>
-            <List dense={true}>
-              <ListSubheader>Members</ListSubheader>
-              {team.users.map((user) => {
-                return (
-                  <ListItem>
-                    <ListItemText
-                      primary={`${user.first_name} ${user.last_name}`}
-                      secondary={user.email}
-                    />
-                    {adminTeams.includes(team.id) && (
-                      <>
-                        <button
-                          onClick={() => {
-                            team.users = team.users.filter(
-                              (u) => u.id !== user.id
-                            );
-                            console.log(team.users);
-                          }}
-                        >
-                          remove member
-                        </button>
-                        <button>make admin</button>
-                      </>
-                    )}
-                  </ListItem>
-                );
-              })}
-              <ListSubheader>Projects</ListSubheader>
-              {team.projects.map((project) => {
-                return (
-                  <ListItem>
-                    <ListItemText primary={`${project.name}`} />
-                  </ListItem>
-                );
-              })}
-              <button onClick={() => handleRemoveTeam(team.id)}>
-                Leave Team
-              </button>
-            </List>
-          </AccordionDetails>
-        </Accordion>
+        <TeamAccordian
+          adminTeams={adminTeams}
+          team={team}
+          handleRemoveTeam={handleRemoveTeam}
+        />
       ))}
     </div>
   );

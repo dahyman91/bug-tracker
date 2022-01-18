@@ -69,7 +69,10 @@ function App() {
           </Route>
           <Route exact path="/create-project">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <CreateProject currentUser={currentUser} />
+            <CreateProject
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
             <SideNav />
           </Route>
           <Route exact path="/create-ticket">
