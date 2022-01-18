@@ -1,18 +1,24 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
-import ShareIcon from "@mui/icons-material/Share";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
 const actions = [
-  { icon: <FileCopyIcon />, name: "Add Ticket", route: "/create-ticket" },
-  { icon: <SaveIcon />, name: "Add Project", route: "/create-project" },
-  { icon: <SaveIcon />, name: "Add Team", route: "/create-team" },
+  {
+    icon: <ConfirmationNumberIcon />,
+    name: "Create Ticket",
+    route: "/create-ticket",
+  },
+  {
+    icon: <AccountTreeIcon />,
+    name: "Create Project",
+    route: "/create-project",
+  },
+  { icon: <GroupWorkIcon />, name: "Create Team", route: "/create-team" },
 ];
 
 export default function SideNav() {

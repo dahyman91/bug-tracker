@@ -10,6 +10,12 @@ class Api::TicketsController < ApplicationController
     render json: ticket, status: :ok
   end
 
+  def update
+    ticket = Ticket.find(params[:id])
+    ticket.update!(ticket_params)
+    render json: ticket, status: :accepted
+  end
+
   def create
     ticket = Ticket.create!(ticket_params)
     render json: ticket, status: :created

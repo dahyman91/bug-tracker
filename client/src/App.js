@@ -12,6 +12,7 @@ import Tickets from "./Pages/Tickets/Tickets";
 import Teams from "./Pages/Teams/Teams";
 import Projects from "./Pages/Projects/Projects";
 import Project from "./Pages/Project/Project";
+import Ticket from "./Pages/Ticket/Ticket";
 
 // Speed Dial
 import CreateTeam from "./Pages/CreateTeam/CreateTeam";
@@ -38,9 +39,6 @@ function App() {
     return (
       <div className="app">
         <Switch>
-          {/* <Route exact path="/">
-          <Redirect to="/log-in" />
-        </Route> */}
           <Route exact path="/">
             <SignUp currentUser={currentUser} setCurrentUser={setCurrentUser} />
           </Route>
@@ -89,7 +87,10 @@ function App() {
 
           <Route exact path="/dashboard">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Dashboard currentUser={currentUser} />
+            <Dashboard
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
             <SideNav />
           </Route>
           <Route exact path="/tickets">
@@ -124,7 +125,7 @@ function App() {
 
           <Route exact path="/ticket/:id">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <div>ticket</div>
+            <Ticket currentUser={currentUser} />
             <SideNav />
           </Route>
         </Switch>

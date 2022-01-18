@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { Pie, Doughnut, Bar } from "react-chartjs-2";
 
-function Dashboard() {
+function Dashboard({ currentUser, setCurrentUser }) {
   ChartJS.register(
     ArcElement,
     Tooltip,
@@ -60,9 +60,14 @@ function Dashboard() {
         </div>
 
         <div>
-          <Pie data={data} />
+          <Bar data={data} />
         </div>
-        <div>
+        <div
+          style={{
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
           <Doughnut data={data} />
         </div>
       </div>

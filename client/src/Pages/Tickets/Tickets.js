@@ -18,6 +18,10 @@ function Tickets({ currentUser, setCurrentUser }) {
   const [submittedTickets, setSubmittedTickets] = useState(null);
   const [openTickets, setOpenTickets] = useState(null);
   const [closedTickets, setClosedTickets] = useState(null);
+  const [projects, setProjects] = useState([]);
+
+  console.log(currentUser);
+  console.log(projects);
 
   let history = useHistory();
 
@@ -27,8 +31,11 @@ function Tickets({ currentUser, setCurrentUser }) {
   }
 
   function getProjectNameById(id) {
-    let project = projects.filter((project) => project.id === id);
-    return project[0].name;
+    console.log(projects);
+    console.log("id", id);
+    let project = projects.filter((project) => project.id == id);
+    console.log(project);
+    return project[0] ? project[0].name : "No Role Assigned";
   }
 
   useEffect(() => {
@@ -36,9 +43,10 @@ function Tickets({ currentUser, setCurrentUser }) {
       if (r.ok) {
         r.json().then((user) => {
           setCurrentUser(user);
+          setProjects(user.projects);
         });
       }
-    });
+    }, []);
 
     fetch(`/api/users/`)
       .then((r) => r.json())
@@ -55,12 +63,14 @@ function Tickets({ currentUser, setCurrentUser }) {
 
   // Data/Data Table
 
-  let projects = currentUser.projects;
+  // let projects = currentUser.projects;
 
   function setSubmittedTicketsData() {
     let submittedTickets = [];
     users[0] &&
+      projects[0] &&
       currentUser.tickets_as_submitter.map((ticket) => {
+        console.log(ticket);
         let ticketData = {
           assignee: getNameById(ticket.assignee_id),
           submitter: getNameById(ticket.submitter_id),
@@ -80,6 +90,7 @@ function Tickets({ currentUser, setCurrentUser }) {
   function setOpenTicketsData() {
     let openTickets = [];
     users[0] &&
+      projects[0] &&
       currentUser.tickets_as_assignee
         .filter((ticket) => ticket.status !== "Closed")
         .map((ticket) => {
@@ -101,6 +112,7 @@ function Tickets({ currentUser, setCurrentUser }) {
   function setClosedTicketsData() {
     let closedTickets = [];
     users[0] &&
+      projects[0] &&
       currentUser.tickets_as_assignee
         .filter((ticket) => ticket.status === "Closed")
         .map((ticket) => {

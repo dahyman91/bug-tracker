@@ -73,9 +73,12 @@ function CreateTicket({ currentUser, setCurrentUser }) {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/teams/${selectedProject.team_id}`)
+    fetch(`/api/projects/${selectedProject.id}`)
       .then((r) => r.json())
-      .then((data) => setTeamMembers(data.users));
+      .then((data) => {
+        console.log(data);
+        setTeamMembers(data.users);
+      });
   }, [selectedProject]);
 
   let displayTeam = teamMembers ? { display: "none" } : {};
@@ -200,7 +203,7 @@ function CreateTicket({ currentUser, setCurrentUser }) {
               (option) => inputValue === option.title
             );
             if (inputValue !== "" && !isExisting) {
-              filtered.push(`Custom Category "${inputValue}"`);
+              filtered.push(inputValue);
             }
 
             return filtered;
