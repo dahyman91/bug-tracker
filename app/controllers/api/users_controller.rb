@@ -5,6 +5,11 @@ class Api::UsersController < ApplicationController
     user = User.find_by(id: session[:user_id])
     render json: user
   end
+
+  def show_by_id
+    user = User.find(params[:id])
+    render json: user
+  end
   
   def index
     render json: User.all

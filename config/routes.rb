@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get '/me', to: 'users#show'
     delete '/logout', to: 'sessions#destroy'
     post '/signup', to: 'users#create'
+    get '/show_user/:id', to: 'users#show_by_id'
     get '/make_admin/:user_id/:team_id', to: 'memberships#make_admin'
     get '/remove_admin/:user_id/:team_id', to: 'memberships#remove_admin'
     get '/check_admin/:user_id/:team_id', to: 'memberships#check_admin'

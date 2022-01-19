@@ -17,7 +17,7 @@ function Project({ currentUser }) {
     let r = [];
     project &&
       project.roles.map((role) => {
-        fetch(`/api/users/${role.user_id}`)
+        fetch(`/api/show_user/${role.user_id}`)
           .then((r) => r.json())
           .then((user) => {
             if (currentUser.id === user.id && role.name === "Project Lead") {
