@@ -3,6 +3,7 @@ import "./Projects.css";
 import DataTable from "../../Components/DataTable";
 import { useHistory } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
 function Projects({ currentUser, setCurrentUser }) {
   let history = useHistory();
@@ -49,13 +50,17 @@ function Projects({ currentUser, setCurrentUser }) {
   );
 
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
+      <Typography>My Projects</Typography>
+      <Button onClick={() => history.push("/create-project")} style={{}}>
+        Add New Project
+      </Button>
       {projects && (
         <DataTable
           columns={columns}
           rows={projects}
           checkboxSelection={false}
-          width={"50%"}
+          width={"80%"}
         />
       )}
     </div>

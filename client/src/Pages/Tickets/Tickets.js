@@ -20,9 +20,6 @@ function Tickets({ currentUser, setCurrentUser }) {
   const [closedTickets, setClosedTickets] = useState(null);
   const [projects, setProjects] = useState([]);
 
-  console.log(currentUser);
-  console.log(projects);
-
   let history = useHistory();
 
   function getNameById(id) {
@@ -51,8 +48,6 @@ function Tickets({ currentUser, setCurrentUser }) {
     fetch(`/api/users/`)
       .then((r) => r.json())
       .then((data) => setUsers(data));
-
-    // setSubmittedTicketsData();
   }, []);
 
   useEffect(() => {
@@ -62,8 +57,6 @@ function Tickets({ currentUser, setCurrentUser }) {
   }, [users]);
 
   // Data/Data Table
-
-  // let projects = currentUser.projects;
 
   function setSubmittedTicketsData() {
     let submittedTickets = [];
@@ -207,7 +200,12 @@ function Tickets({ currentUser, setCurrentUser }) {
   }
 
   return (
-    <Box sx={{ width: "70%", margin: "auto" }}>
+    <Box sx={{ width: "85%", margin: "auto", textAlign: "center" }}>
+      <Typography>My Tickets</Typography>
+
+      <Button onClick={() => history.push("/create-ticket")} style={{}}>
+        Add New Ticket
+      </Button>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Accordion from "@mui/material/Accordion";
@@ -8,15 +8,38 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Button } from "@mui/material";
 
-function TeamAccordian({ team, adminTeams, handleRemoveTeam }) {
+function TeamAccordian({
+  team,
+  adminTeams,
+  handleRemoveTeam,
+  currentUser,
+  fetchInfo,
+}) {
   const [members, setMembers] = useState(team.users);
+  const [isAdminArr, setIsAdminArr] = useState([]);
+
+  useEffect(() => {
+    members.map((member) =>
+      fetch(`/api/check_admin/${member.id}/${team.id}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data[0]["is_admin?"]) {
+            setIsAdminArr((isAdminArr) => [...isAdminArr, true]);
+          } else {
+            setIsAdminArr((isAdminArr) => [...isAdminArr, false]);
+          }
+        })
+    );
+  }, []);
 
   function handleRemoveMember(id) {
     let updatedTeam = members.filter((member) => member.id !== id);
     fetch(`/api/destroy_membership/${id}/${team.id}`);
     setMembers(updatedTeam);
   }
+
   return (
     <div>
       <Accordion>
@@ -27,37 +50,37 @@ function TeamAccordian({ team, adminTeams, handleRemoveTeam }) {
         >
           <Typography>{team.name}</Typography>
         </AccordionSummary>
-        {adminTeams.includes(team.id) && <Typography>admin</Typography>}
+        {console.log(adminTeams, team.id)}
+        {adminTeams.includes(team.id) && <Typography>you are admin</Typography>}
         <AccordionDetails>
           <Typography>{team.description}</Typography>
           <List dense={true}>
             <ListSubheader>Members</ListSubheader>
-            {members.map((user) => {
+            {members.map((user, index) => {
               return (
                 <ListItem>
                   <ListItemText
-                    primary={`${user.first_name} ${user.last_name}`}
+                    primary={`${user.first_name} ${user.last_name} ${
+                      isAdminArr[index] ? "(Admin)" : ""
+                    }`}
                     secondary={user.email}
                   />
-                  <ListItemText>
-                    {/* {fetch(`/check_admin/${team.id}/${user.id}`)
-                        .then((r) => r.json())
-                        .then((data) => {
-                          return data["is_admin?"];
-                        })} */}
-                  </ListItemText>
+
                   {adminTeams.includes(team.id) && (
                     <>
-                      <button onClick={() => handleRemoveMember(user.id)}>
+                      <Button onClick={() => handleRemoveMember(user.id)}>
                         remove member
-                      </button>
-                      <button
-                        onClick={() =>
-                          fetch(`/api/make_admin/${user.id}/${team.id}`)
-                        }
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          let newArr = [...isAdminArr];
+                          newArr[index] = true;
+                          setIsAdminArr(newArr);
+                          fetch(`/api/make_admin/${user.id}/${team.id}`);
+                        }}
                       >
                         make admin
-                      </button>
+                      </Button>
                     </>
                   )}
                 </ListItem>
@@ -71,9 +94,9 @@ function TeamAccordian({ team, adminTeams, handleRemoveTeam }) {
                 </ListItem>
               );
             })}
-            <button onClick={() => handleRemoveTeam(team.id)}>
+            <Button onClick={() => handleRemoveTeam(team.id)}>
               Leave Team
-            </button>
+            </Button>
           </List>
         </AccordionDetails>
       </Accordion>

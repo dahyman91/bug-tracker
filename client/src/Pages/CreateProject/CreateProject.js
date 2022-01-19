@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import "./CreateProject.css";
 import AddItemStepper from "../../Components/Stepper";
 import Stack from "@mui/material/Stack";
@@ -17,6 +18,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [roleAssignments, setRoleAssignments] = useState([]);
+  let history = useHistory();
 
   const steps = ["Add Project Details", "Assign Roles", "Review/Add Project"];
   const roleOptions = ["Project Lead", "Project Contributor"];
@@ -252,6 +254,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
           });
         });
       });
+    history.push("/projects");
   }
 
   const submitParams = [roles, team, projectName, projectDescription];

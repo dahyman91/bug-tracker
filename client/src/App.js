@@ -64,7 +64,10 @@ function App() {
           <Route exact path="/create-team">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
             <CreateTeam currentUser={currentUser} />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
           <Route exact path="/create-project">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
@@ -72,7 +75,10 @@ function App() {
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
           <Route exact path="/create-ticket">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
@@ -80,7 +86,10 @@ function App() {
               setCurrentUser={setCurrentUser}
               currentUser={currentUser}
             />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
 
           {/* Main Pages */}
@@ -91,7 +100,10 @@ function App() {
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
           <Route exact path="/tickets">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
@@ -99,12 +111,18 @@ function App() {
               setCurrentUser={setCurrentUser}
               currentUser={currentUser}
             />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
           <Route exact path="/teams">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
             <Teams setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
           <Route exact path="/projects">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
@@ -112,7 +130,10 @@ function App() {
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
 
           {/* Specific Product and Ticket Routes */}
@@ -120,13 +141,19 @@ function App() {
           <Route exact path="/project/:id">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
             <Project currentUser={currentUser} />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
 
           <Route exact path="/ticket/:id">
             <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
             <Ticket currentUser={currentUser} />
-            <SideNav />
+            <SideNav
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />
           </Route>
         </Switch>
       </div>

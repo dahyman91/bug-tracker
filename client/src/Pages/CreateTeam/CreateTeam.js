@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import "./CreateTeam.css";
 import AddItemStepper from "../../Components/Stepper";
 import Stack from "@mui/material/Stack";
@@ -16,6 +17,8 @@ function CreateTeam({ currentUser, setCurrentUser }) {
   const [availableUsers, setAvailableUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const steps = ["Add Team Details", "Select Members", "Review/Add Team"];
+
+  let history = useHistory();
 
   function fetchUsers() {
     fetch("/api/users")
@@ -55,13 +58,7 @@ function CreateTeam({ currentUser, setCurrentUser }) {
           });
         });
       })
-
-      .then(
-        fetchUsers(),
-        setTeamDescription(""),
-        setTeamName(""),
-        setSelectedUsers([])
-      );
+      .then(() => history.push("/teams"));
   }
 
   let submitParams = [teamName, teamDescription, selectedUsers];

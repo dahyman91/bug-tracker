@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import TeamAccordian from "../../Components/TeamAccordian";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Accordion from "@mui/material/Accordion";
-import ListItemText from "@mui/material/ListItemText";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ListSubheader from "@mui/material/ListSubheader";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Button } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
 export default function Teams({ setCurrentUser, currentUser }) {
   const [teams, setTeams] = useState([]);
   const [adminTeams, setAdminTeams] = useState([]);
+  console.log(adminTeams);
 
   function fetchInfo() {
     fetch("/api/me").then((r) => {
@@ -20,11 +15,13 @@ export default function Teams({ setCurrentUser, currentUser }) {
         r.json().then((user) => {
           setCurrentUser(user);
           setTeams(user.teams);
+          console.log(user.admin_teams);
           setAdminTeams(user.admin_teams.map((team) => team.team_id));
         });
       }
     });
   }
+
   useEffect(() => {
     fetchInfo();
   }, []);
@@ -35,16 +32,25 @@ export default function Teams({ setCurrentUser, currentUser }) {
     setTeams(updatedTeams);
   }
 
+  let history = useHistory();
+
   return (
-    <div style={{ width: "70%", margin: "auto" }}>
-      <Typography>My Teams</Typography>
-      {teams.map((team) => (
-        <TeamAccordian
-          adminTeams={adminTeams}
-          team={team}
-          handleRemoveTeam={handleRemoveTeam}
-        />
-      ))}
-    </div>
+    <>
+      <div style={{ textAlign: "center", width: "80%", margin: "auto" }}>
+        <Typography>My Teams</Typography>
+        <Button onClick={() => history.push("/create-team")} style={{}}>
+          Add New Team
+        </Button>
+        {teams.map((team) => (
+          <TeamAccordian
+            fetchInfo={fetchInfo}
+            currentUser={currentUser}
+            adminTeams={adminTeams}
+            team={team}
+            handleRemoveTeam={handleRemoveTeam}
+          />
+        ))}
+      </div>
+    </>
   );
 }

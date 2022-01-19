@@ -1,5 +1,6 @@
 import "./CreateTicket.css";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import AddItemStepper from "../../Components/Stepper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -18,6 +19,8 @@ function CreateTicket({ currentUser, setCurrentUser }) {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
+
+  let history = useHistory();
 
   function handleSubmit(
     selectedUser,
@@ -45,6 +48,7 @@ function CreateTicket({ currentUser, setCurrentUser }) {
       },
       body: JSON.stringify(ticket),
     });
+    history.push("/tickets");
   }
 
   let submitParams = [
@@ -58,7 +62,6 @@ function CreateTicket({ currentUser, setCurrentUser }) {
   ];
 
   const filter = createFilterOptions();
-  console.log(category);
 
   const categories = ["Feature Request", "Bug", "Design"];
   const statuses = ["New", "Open", "In Progress", "Closed"];
@@ -81,13 +84,10 @@ function CreateTicket({ currentUser, setCurrentUser }) {
       });
   }, [selectedProject]);
 
-  let displayTeam = teamMembers ? { display: "none" } : {};
-
   const projects = [];
   currentUser.teams.map((team) =>
     team.projects.map((project) => projects.push(project))
   );
-  console.log(selectedProject);
 
   const steps = [
     "Add Ticket Description",
