@@ -200,7 +200,7 @@ function Tickets({ currentUser, setCurrentUser }) {
   }
 
   return (
-    <Box sx={{ width: "85%", margin: "auto", textAlign: "center" }}>
+    <Box sx={{ width: "80%", margin: "auto", textAlign: "center" }}>
       <Typography>My Tickets</Typography>
 
       <Button onClick={() => history.push("/create-ticket")} style={{}}>
