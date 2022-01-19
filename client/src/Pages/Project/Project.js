@@ -62,11 +62,13 @@ function Project({ currentUser }) {
   // console.log(project);
 
   return (
-    <Box sx={{ flexGrow: 1, width: "100%" }}>
-      <Grid style={{ margin: "0 auto" }} container spacing={8}>
-        <Grid textAlign="center" item>
+    <Box
+      sx={{ flexGrow: 1, width: "80%", margin: "auto", textAlign: "center" }}
+    >
+      {isLead && <div style={{ margin: "auto" }}>You Are Project Lead</div>}
+      <Grid style={{ margin: "auto" }} container spacing={8}>
+        <Grid item>
           <Stack component="form" spacing={2} noValidate autoComplete="off">
-            {isLead && <div>you are the lead</div>}
             {project && (
               <TextField
                 id="outlined-basic"
@@ -99,10 +101,11 @@ function Project({ currentUser }) {
             )}
           </Stack>
         </Grid>
-        <Grid textAlign="center" item style={{ width: "55%" }}>
+        <Grid textAlign="center" item style={{ width: "75%", margin: "auto" }}>
           <DataTable
             columns={columns}
             rows={detailRoles}
+            minimum
             checkboxSelection={false}
             // width="52%"
           />
