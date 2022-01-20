@@ -72,7 +72,10 @@ function Dashboard({ currentUser, setCurrentUser }) {
   ).length;
 
   const otherTickets = tickets.filter(
-    (ticket) => ticket.category !== "Bug" || "Feature Request" || "Design"
+    (ticket) =>
+      ticket.category !== "Bug" &&
+      ticket.category !== "Feature Request" &&
+      ticket.category !== "Design"
   ).length;
 
   const ticketsByStatusOptions = {

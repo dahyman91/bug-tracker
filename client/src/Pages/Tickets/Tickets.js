@@ -28,10 +28,7 @@ function Tickets({ currentUser, setCurrentUser }) {
   }
 
   function getProjectNameById(id) {
-    console.log(projects);
-    console.log("id", id);
     let project = projects.filter((project) => project.id == id);
-    console.log(project);
     return project[0] ? project[0].name : "No Role Assigned";
   }
 
@@ -211,11 +208,12 @@ function Tickets({ currentUser, setCurrentUser }) {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
-          // sx={{ textAlign: "center" }}
         >
-          <Tab label="My Open Tickets" {...a11yProps(0)} />
-          <Tab label="My Closed Tickets" {...a11yProps(1)} />
-          <Tab label="Submitted Tickets" {...a11yProps(2)} />
+          {openTickets && <Tab label="My Open Tickets" {...a11yProps(0)} />}
+          {closedTickets && <Tab label="My Closed Tickets" {...a11yProps(1)} />}
+          {submittedTickets && (
+            <Tab label="Submitted Tickets" {...a11yProps(2)} />
+          )}
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

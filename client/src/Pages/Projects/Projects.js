@@ -16,6 +16,7 @@ function Projects({ currentUser, setCurrentUser }) {
       }
     });
   }, []);
+
   const columns = [
     { field: "id", headerName: "Project ID", width: 135 },
     { field: "name", headerName: "Project Name", width: 200 },

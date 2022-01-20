@@ -20,6 +20,8 @@ export default function Teams({ setCurrentUser, currentUser }) {
     });
   }
 
+  console.log(currentUser);
+
   useEffect(() => {
     fetchInfo();
   }, []);
@@ -39,15 +41,16 @@ export default function Teams({ setCurrentUser, currentUser }) {
         <Button onClick={() => history.push("/create-team")} style={{}}>
           Add New Team
         </Button>
-        {teams.map((team) => (
-          <TeamAccordian
-            fetchInfo={fetchInfo}
-            currentUser={currentUser}
-            adminTeams={adminTeams}
-            team={team}
-            handleRemoveTeam={handleRemoveTeam}
-          />
-        ))}
+        {teams &&
+          teams.map((team) => (
+            <TeamAccordian
+              fetchInfo={fetchInfo}
+              currentUser={currentUser}
+              adminTeams={adminTeams}
+              team={team}
+              handleRemoveTeam={handleRemoveTeam}
+            />
+          ))}
       </div>
     </>
   );

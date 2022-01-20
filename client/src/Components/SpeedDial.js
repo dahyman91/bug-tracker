@@ -13,13 +13,12 @@ export default function SideNav({ currentUser, setCurrentUser }) {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
-          setCurrentUser(user);
           setActions([
             {
               icon: <ConfirmationNumberIcon />,
               name: "Create Ticket",
               route: "/create-ticket",
-              isDisabled: user.teams[0] ? false : true,
+              isDisabled: user.projects[0] ? false : true,
             },
             {
               icon: <AccountTreeIcon />,
@@ -36,25 +35,29 @@ export default function SideNav({ currentUser, setCurrentUser }) {
         });
       }
     });
-  }, []);
+  }, [currentUser]);
 
   let history = useHistory();
 
   return (
-    <SpeedDial
-      ariaLabel="SpeedDial basic example"
-      sx={{ position: "absolute", bottom: "50%", left: 25 }}
-      icon={<SpeedDialIcon />}
-    >
-      {actions.map((action) => (
-        <SpeedDialAction
-          disabled={action.isDisabled}
-          key={action.name}
-          icon={action.icon}
-          tooltipTitle={action.name}
-          onClick={() => history.push(action.route)}
-        />
-      ))}
-    </SpeedDial>
+    <>
+      {currentUser && (
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{ position: "absolute", bottom: "50%", left: 25 }}
+          icon={<SpeedDialIcon />}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              disabled={action.isDisabled}
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={() => history.push(action.route)}
+            />
+          ))}
+        </SpeedDial>
+      )}
+    </>
   );
 }
