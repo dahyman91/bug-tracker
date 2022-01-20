@@ -20,9 +20,10 @@ class Api::CommentsController < ApplicationController
     comment.destroy
     head :no_content
   end
+
   private
 
-  def commment_params
+  def comment_params
     params.permit(:user_id, :ticket_id, :message)
   end
 end

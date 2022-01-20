@@ -1,6 +1,7 @@
 import "./Ticket.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { Select, MenuItem } from "@mui/material";
@@ -9,11 +10,14 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { FormHelperText } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Divider, Avatar, Grid, Paper } from "@material-ui/core";
+import { Avatar, Grid, Paper } from "@material-ui/core";
+import Comment from "../../Components/Comment";
 
 function Ticket({ currentUser }) {
   const { id } = useParams();
   const filter = createFilterOptions();
+
+  let history = useHistory();
 
   const [assigneeName, setAssigneeName] = useState("");
   const [submitterName, setSubmitterName] = useState("");
@@ -28,6 +32,8 @@ function Ticket({ currentUser }) {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetch(`/api/tickets/${id}`)
@@ -39,6 +45,7 @@ function Ticket({ currentUser }) {
         setCategory(data.category);
         setStatus(data.status);
         setPriority(data.priority);
+        setComments(data.comments);
       });
   }, []);
 
@@ -71,15 +78,10 @@ function Ticket({ currentUser }) {
       .then((r) => r.json())
       .then((data) => {
         setProjectName(data.name);
-        setTeamMembers(data.users);
         setSelectedProject(data);
+        setTeamMembers(data.users);
       });
   }
-
-  useEffect(() => {
-    fetch(`/api/teams/${id}`).then((r) => r.json());
-    // .then((data) => console.log("team", data));
-  }, []);
 
   const projects = [];
   currentUser.teams.map((team) =>
@@ -88,8 +90,6 @@ function Ticket({ currentUser }) {
   const categories = ["Feature Request", "Bug", "Design"];
   const statuses = ["New", "Open", "In Progress", "Closed"];
   const priorities = ["Low", "Medium", "High"];
-  const imgLink =
-    "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
   return (
     <>
@@ -139,9 +139,6 @@ function Ticket({ currentUser }) {
                     );
                   })}
                 </Select>
-                <FormHelperText id="my-helper-text">
-                  We'll never share your email.
-                </FormHelperText>
               </FormControl>
               <TextField
                 id="outlined-multiline-flexible"
@@ -175,6 +172,13 @@ function Ticket({ currentUser }) {
                   label={`Change Project (Currently ${selectedProject.name})`}
                   onChange={(e) => {
                     setSelectedProject(e.target.value);
+                    console.log(e.target.value.id);
+                    fetch(`/api/projects/${e.target.value.id}`)
+                      .then((r) => r.json())
+                      .then((data) => {
+                        console.log(data);
+                        setTeamMembers(data.users);
+                      });
                   }}
                 >
                   {projects.map((project) => {
@@ -186,7 +190,6 @@ function Ticket({ currentUser }) {
                   })}
                 </Select>
               </FormControl>
-
               <FormControl fullWidth>
                 <InputLabel id="user-select-label">
                   Change Ticket Assignee Currently ({selectedUser.first_name}{" "}
@@ -210,6 +213,7 @@ function Ticket({ currentUser }) {
                     );
                   })}
                 </Select>
+                <FormHelperText id="my-helper-text"></FormHelperText>
               </FormControl>
               <Autocomplete
                 value={category}
@@ -217,7 +221,6 @@ function Ticket({ currentUser }) {
                   if (typeof newValue === "string") {
                     setCategory(newValue);
                   } else if (newValue && newValue.inputValue) {
-                    // Create a new value from the user input
                     setCategory(newValue);
                   } else {
                     setCategory(newValue);
@@ -227,7 +230,6 @@ function Ticket({ currentUser }) {
                   const filtered = filter(options, params);
 
                   const { inputValue } = params;
-                  // Suggest the creation of a new value
                   const isExisting = options.some(
                     (option) => inputValue === option.title
                   );
@@ -243,15 +245,13 @@ function Ticket({ currentUser }) {
                 id="free-solo-with-text-demo"
                 options={categories}
                 getOptionLabel={(option) => {
-                  // Value selected with enter, right from the input
                   if (typeof option === "string") {
                     return option;
                   }
-                  // Add "xxx" option created dynamically
+
                   if (option.inputValue) {
                     return option.inputValue;
                   }
-                  // Regular option
                   return option;
                 }}
                 renderOption={(props, option) => <li {...props}>{option}</li>}
@@ -261,7 +261,6 @@ function Ticket({ currentUser }) {
                   <TextField {...params} label="Choose or Create Category" />
                 )}
               />
-
               <FormControl>
                 <InputLabel htmlFor="priority-select">Priority</InputLabel>
                 <Select
@@ -304,7 +303,7 @@ function Ticket({ currentUser }) {
                   description: ticketDescription,
                   category,
                 }),
-              })
+              }).then(() => history.push("/tickets"))
             }
           >
             Update Ticket
@@ -313,31 +312,31 @@ function Ticket({ currentUser }) {
       </>
 
       <div style={{ padding: 14, textAlign: "center" }}>
-        <h1>Comments</h1>
-        <Paper style={{ width: "70%", padding: "40px 20px", margin: "auto" }}>
-          <Grid container wrap="nowrap" spacing={2}>
-            <Grid item>
-              <Avatar alt="Remy Sharp" src={imgLink} />
-            </Grid>
-            <Grid justifyContent="left" item xs zeroMinWidth>
-              <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
-              <p style={{ textAlign: "left" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                luctus ut est sed faucibus. Duis bibendum ac ex vehicula
-                laoreet. Suspendisse congue vulputate lobortis. Pellentesque at
-                interdum tortor. Quisque arcu quam, malesuada vel mauris et,
-                posuere sagittis ipsum. Aliquam ultricies a ligula nec faucibus.
-                In elit metus, efficitur lobortis nisi quis, molestie porttitor
-                metus. Pellentesque et neque risus. Aliquam vulputate, mauris
-                vitae tincidunt interdum, mauris mi vehicula urna, nec feugiat
-                quam lectus vitae ex.{" "}
-              </p>
-              <p style={{ textAlign: "left", color: "gray" }}>
-                posted 1 minute ago
-              </p>
-            </Grid>
-          </Grid>
-        </Paper>
+        <h3>Comments</h3>
+        {comments.map((comment) => (
+          <Comment comment={comment} />
+        ))}
+        <TextField
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+        />
+        <Button
+          onClick={() => {
+            let fullComment = {
+              message: newComment,
+              user_id: currentUser.id,
+              ticket_id: ticket.id,
+            };
+            fetch("/api/comments", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify(fullComment),
+            });
+            setComments([...comments, fullComment]);
+          }}
+        >
+          Add Comment
+        </Button>
       </div>
     </>
   );
