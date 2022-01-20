@@ -51,7 +51,6 @@ export default function SignUp({ setCurrentUser, currentUser }) {
       }),
     }).then((res) => {
       if (res.ok) {
-        // console.log(res);
         setCurrentUser({
           first_name,
           last_name,

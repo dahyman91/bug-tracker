@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
@@ -8,36 +8,38 @@ import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
 export default function SideNav({ currentUser, setCurrentUser }) {
+  const [actions, setActions] = useState([]);
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
           setCurrentUser(user);
+          setActions([
+            {
+              icon: <ConfirmationNumberIcon />,
+              name: "Create Ticket",
+              route: "/create-ticket",
+              isDisabled: user.teams[0] ? false : true,
+            },
+            {
+              icon: <AccountTreeIcon />,
+              name: "Create Project",
+              route: "/create-project",
+              isDisabled: user.teams[0] ? false : true,
+            },
+            {
+              icon: <GroupWorkIcon />,
+              name: "Create Team",
+              route: "/create-team",
+            },
+          ]);
         });
       }
     });
   }, []);
-  const actions = [
-    {
-      icon: <ConfirmationNumberIcon />,
-      name: "Create Ticket",
-      route: "/create-ticket",
-      isDisabled: currentUser.projects[0] ? false : true,
-    },
-    {
-      icon: <AccountTreeIcon />,
-      name: "Create Project",
-      route: "/create-project",
-      isDisabled: currentUser.teams[0] ? false : true,
-    },
-    {
-      icon: <GroupWorkIcon />,
-      name: "Create Team",
-      route: "/create-team",
-      // isDisabled: currentUser.tickets ? false : true,
-    },
-  ];
+
   let history = useHistory();
+
   return (
     <SpeedDial
       ariaLabel="SpeedDial basic example"

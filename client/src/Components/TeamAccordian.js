@@ -18,7 +18,7 @@ function TeamAccordian({
   fetchInfo,
 }) {
   const [members, setMembers] = useState(team.users);
-  const [isAdminArr, setIsAdminArr] = useState([]);
+  const [isAdminArr, setIsAdminArr] = useState({});
 
   useEffect(() => {
     members.map((member) =>
@@ -26,9 +26,15 @@ function TeamAccordian({
         .then((r) => r.json())
         .then((data) => {
           if (data[0]["is_admin?"]) {
-            setIsAdminArr((isAdminArr) => [...isAdminArr, true]);
+            setIsAdminArr((isAdminArr) => ({
+              ...isAdminArr,
+              [member.id]: true,
+            }));
           } else {
-            setIsAdminArr((isAdminArr) => [...isAdminArr, false]);
+            setIsAdminArr((isAdminArr) => ({
+              ...isAdminArr,
+              [member.id]: false,
+            }));
           }
         })
     );
@@ -50,7 +56,6 @@ function TeamAccordian({
         >
           <Typography>{team.name}</Typography>
         </AccordionSummary>
-        {console.log(adminTeams, team.id)}
         {adminTeams.includes(team.id) && <Typography>you are admin</Typography>}
         <AccordionDetails>
           <Typography>{team.description}</Typography>
@@ -61,7 +66,7 @@ function TeamAccordian({
                 <ListItem>
                   <ListItemText
                     primary={`${user.first_name} ${user.last_name} ${
-                      isAdminArr[index] ? "(Admin)" : ""
+                      isAdminArr[user.id] ? "(Admin)" : ""
                     }`}
                     secondary={user.email}
                   />
@@ -73,9 +78,10 @@ function TeamAccordian({
                       </Button>
                       <Button
                         onClick={() => {
-                          let newArr = [...isAdminArr];
-                          newArr[index] = true;
-                          setIsAdminArr(newArr);
+                          setIsAdminArr((isAdminArr) => ({
+                            ...isAdminArr,
+                            [user.id]: true,
+                          }));
                           fetch(`/api/make_admin/${user.id}/${team.id}`);
                         }}
                       >

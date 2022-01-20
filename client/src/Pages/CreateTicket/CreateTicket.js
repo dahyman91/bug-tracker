@@ -64,7 +64,13 @@ function CreateTicket({ currentUser, setCurrentUser }) {
   const filter = createFilterOptions();
 
   const categories = ["Feature Request", "Bug", "Design"];
-  const statuses = ["New", "Open", "In Progress", "Closed"];
+  const statuses = [
+    "New",
+    "Open",
+    "More Information Needed",
+    "In Progress",
+    "Closed",
+  ];
   const priorities = ["Low", "Medium", "High"];
 
   useEffect(() => {

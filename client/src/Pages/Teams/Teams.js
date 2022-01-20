@@ -7,7 +7,6 @@ import { useHistory } from "react-router-dom";
 export default function Teams({ setCurrentUser, currentUser }) {
   const [teams, setTeams] = useState([]);
   const [adminTeams, setAdminTeams] = useState([]);
-  console.log(adminTeams);
 
   function fetchInfo() {
     fetch("/api/me").then((r) => {
@@ -15,7 +14,6 @@ export default function Teams({ setCurrentUser, currentUser }) {
         r.json().then((user) => {
           setCurrentUser(user);
           setTeams(user.teams);
-          console.log(user.admin_teams);
           setAdminTeams(user.admin_teams.map((team) => team.team_id));
         });
       }
