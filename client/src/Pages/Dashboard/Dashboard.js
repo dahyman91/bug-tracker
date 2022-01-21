@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import BasicModal from "../../Components/Modal";
+import { useHistory } from "react-router-dom";
 import "./Dashboard.css";
 import {
   Chart as ChartJS,
@@ -10,16 +12,28 @@ import {
   BarElement,
   Title,
 } from "chart.js";
-import { Pie, Doughnut, Bar } from "react-chartjs-2";
+import { Doughnut, Bar } from "react-chartjs-2";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItem from "@mui/material/ListItem";
+import InboxIcon from "@mui/icons-material/Inbox";
+import ListItemText from "@mui/material/ListItemText";
+import { Typography } from "@mui/material";
 
 function Dashboard({ currentUser, setCurrentUser }) {
+  const [open, setOpen] = useState(true);
   const [tickets, setTickets] = useState([]);
+  const [submittedTickets, setSubmittedTickets] = useState([]);
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => {
           setCurrentUser(user);
           setTickets(user.tickets_as_assignee);
+          setSubmittedTickets(user.tickets_as_submitter);
+          user.tickets_as_assignee[0] && setOpen(false);
         });
       }
     });
@@ -34,6 +48,8 @@ function Dashboard({ currentUser, setCurrentUser }) {
     BarElement,
     Title
   );
+
+  let history = useHistory();
 
   const lowPriorityTickets = tickets.filter(
     (ticket) => ticket.priority === "Low"
@@ -218,6 +234,9 @@ function Dashboard({ currentUser, setCurrentUser }) {
 
   return (
     <div>
+      {!currentUser.tickets && (
+        <BasicModal currentUser={currentUser} open={open} setOpen={setOpen} />
+      )}
       <div className="chart-container">
         <div className="chart">
           <Bar
@@ -234,10 +253,68 @@ function Dashboard({ currentUser, setCurrentUser }) {
         </div>
 
         <div>
-          <Pie options={options} data={ticketsByPriorityData} />
+          <Box
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
+            <List dense>
+              <Typography textAlign={"center"}>
+                Recent Assigned Tickets
+              </Typography>
+              {tickets
+                .slice(0, 5)
+                .reverse()
+                .map((ticket) => {
+                  return (
+                    <ListItem
+                      onClick={() => history.push(`/ticket/${ticket.id}`)}
+                      disablePadding
+                    >
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={ticket.title}
+                          // secondary={ticket.project_id}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </Box>
         </div>
         <div>
-          <Doughnut data={ticketsByPriorityData} />
+          <Box
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
+            <List dense>
+              <Typography textAlign={"center"}>
+                Recent Submitted Tickets
+              </Typography>
+              {submittedTickets
+                .slice(0, 5)
+                .reverse()
+                .map((ticket) => {
+                  return (
+                    <ListItem
+                      onClick={() => history.push(`/ticket/${ticket.id}`)}
+                      disablePadding
+                    >
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={ticket.title}
+                          // secondary={ticket.project_id}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </Box>
         </div>
       </div>
     </div>

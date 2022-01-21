@@ -1,11 +1,11 @@
 import React from "react";
 
-function LandingImg({ height }) {
+function LandingImg({ height, width }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       data-name="Layer 1"
-      width="936.13137"
+      width={width}
       height={height}
       viewBox="0 0 936.13137 505.29587"
       // xmlns="http://www.w3.org/1999/xlink"
