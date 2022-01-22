@@ -10,12 +10,13 @@ import FormControl from "@mui/material/FormControl";
 
 import Select from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
+import { FormHelperText, Typography } from "@mui/material";
 
 function CreateTeam({ currentUser, setCurrentUser }) {
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
   const [availableUsers, setAvailableUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([currentUser]);
   const steps = ["Add Team Details", "Select Members", "Review/Add Team"];
 
   let history = useHistory();
@@ -23,7 +24,10 @@ function CreateTeam({ currentUser, setCurrentUser }) {
   function fetchUsers() {
     fetch("/api/users")
       .then((r) => r.json())
-      .then((users) => setAvailableUsers(users));
+      .then((users) => {
+        let u = users.filter((user) => user.id !== currentUser.id);
+        setAvailableUsers(u);
+      });
   }
   useEffect(() => {
     fetchUsers();
@@ -75,6 +79,7 @@ function CreateTeam({ currentUser, setCurrentUser }) {
         noValidate
         autoComplete="off"
       >
+        <Typography style={{ margin: "auto" }}>Add Team Details</Typography>
         <TextField
           id="outlined-basic"
           label="Team Name"
@@ -97,14 +102,22 @@ function CreateTeam({ currentUser, setCurrentUser }) {
   function secondStep() {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <Grid style={{ width: "50%", margin: "0 auto" }} container spacing={8}>
+        <Typography style={{ textAlign: "center" }}>
+          Add Users To Your Team
+        </Typography>
+        <Grid
+          style={{ width: "90%", margin: "0 auto" }}
+          container
+          columns={{ md: 2, sm: 2, lg: 12 }}
+          spacing={{ md: 3, sm: 2, lg: 2 }}
+        >
           <Grid textAlign="center" item xs={6}>
             <FormControl>
               <InputLabel shrink htmlFor="select-multiple-native">
                 Available Users
               </InputLabel>
               <Select
-                sx={{ width: "25ch" }}
+                sx={{ width: "50ch", height: "13ch" }}
                 multiple
                 native
                 label="Available Users"
@@ -112,22 +125,27 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                   id: "select-multiple-native",
                 }}
               >
-                {availableUsers.map((user) => (
-                  <option
-                    onClick={() => {
-                      const updatedUsers = availableUsers.filter(
-                        (availableUser) => availableUser.id !== user.id
-                      );
-                      setAvailableUsers(updatedUsers);
-                      setSelectedUsers([user, ...selectedUsers]);
-                    }}
-                    key={user.id}
-                    value={user.id}
-                  >
-                    {user.first_name} {user.last_name}
-                  </option>
-                ))}
+                {availableUsers
+                  .sort((a, b) => a.first_name - b.first_name)
+                  .map((user) => (
+                    <option
+                      onClick={() => {
+                        const updatedUsers = availableUsers.filter(
+                          (availableUser) => availableUser.id !== user.id
+                        );
+                        setAvailableUsers(updatedUsers);
+                        setSelectedUsers([...selectedUsers, user]);
+                      }}
+                      key={user.id}
+                      value={user.id}
+                    >
+                      {user.first_name} {user.last_name} (email: {user.email})
+                    </option>
+                  ))}
               </Select>
+              <FormHelperText>
+                Click To Add Team Members. Be Sure to include yourself!
+              </FormHelperText>
             </FormControl>
           </Grid>
           <Grid textAlign="center" item xs={6}>
@@ -136,7 +154,7 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                 Selected Users
               </InputLabel>
               <Select
-                sx={{ width: "25ch" }}
+                sx={{ width: "50ch", height: "13ch" }}
                 multiple
                 native
                 label="Selected Users"
@@ -156,10 +174,16 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                     key={user.id}
                     value={user.id}
                   >
-                    {user.first_name}
+                    {user.id === currentUser.id
+                      ? `${user.first_name} ${user.last_name} (Me)`
+                      : `${user.first_name} ${user.last_name} (email: ${user.email})`}
                   </option>
                 ))}
               </Select>
+              <FormHelperText>
+                Click To Remove Team Members. Team Members:{" "}
+                {selectedUsers.length}
+              </FormHelperText>
             </FormControl>
           </Grid>
         </Grid>
@@ -169,7 +193,8 @@ function CreateTeam({ currentUser, setCurrentUser }) {
   function thirdStep() {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <Grid style={{ width: "50%", margin: "0 auto" }} container spacing={8}>
+        <Typography textAlign="center">Review Team Details & Submit</Typography>
+        <Grid style={{ width: "50%", margin: "0 auto" }} container spacing={3}>
           <Grid textAlign="center" item xs={6}>
             <Stack
               component="form"

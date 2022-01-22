@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Accordion from "@mui/material/Accordion";
@@ -46,6 +47,8 @@ function TeamAccordian({
     setMembers(updatedTeam);
   }
 
+  let history = useHistory();
+
   return (
     <div>
       <Accordion>
@@ -54,49 +57,76 @@ function TeamAccordian({
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>{team.name}</Typography>
+          <Typography>Team Name: {team.name}</Typography>
         </AccordionSummary>
-        {adminTeams.includes(team.id) && <Typography>you are admin</Typography>}
-        <AccordionDetails>
-          <Typography>{team.description}</Typography>
-          <List dense={true}>
+        {adminTeams.includes(team.id) && (
+          <Typography style={{}}>
+            <em>You Have Admin Priviledges</em>
+          </Typography>
+        )}
+        <AccordionDetails style={{}}>
+          <Typography>Team Description: {team.description}</Typography>
+          <List dense={false}>
             <ListSubheader>Members</ListSubheader>
             {members.map((user, index) => {
               return (
-                <ListItem>
-                  <ListItemText
-                    primary={`${user.first_name} ${user.last_name} ${
-                      isAdminArr[user.id] ? "(Admin)" : ""
-                    }`}
-                    secondary={user.email}
-                  />
-
-                  {adminTeams.includes(team.id) && (
-                    <>
-                      <Button onClick={() => handleRemoveMember(user.id)}>
-                        remove member
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setIsAdminArr((isAdminArr) => ({
-                            ...isAdminArr,
-                            [user.id]: true,
-                          }));
-                          fetch(`/api/make_admin/${user.id}/${team.id}`);
-                        }}
-                      >
-                        make admin
-                      </Button>
-                    </>
-                  )}
-                </ListItem>
+                <div>
+                  <ListItem
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Typography>
+                      {user.first_name} {user.last_name}
+                      {isAdminArr[user.id] && ", Admin"} (email {user.email})
+                    </Typography>
+                    {adminTeams.includes(team.id) && (
+                      <div style={{}}>
+                        <Button
+                          // style={{ margin: "auto" }}
+                          onClick={() => handleRemoveMember(user.id)}
+                        >
+                          remove member
+                        </Button>
+                        {isAdminArr[user.id] ? (
+                          <Button
+                            onClick={() => {
+                              setIsAdminArr((isAdminArr) => ({
+                                ...isAdminArr,
+                                [user.id]: false,
+                              }));
+                              fetch(`/api/remove_admin/${user.id}/${team.id}`);
+                            }}
+                          >
+                            remove admin priviledges
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => {
+                              setIsAdminArr((isAdminArr) => ({
+                                ...isAdminArr,
+                                [user.id]: true,
+                              }));
+                              fetch(`/api/make_admin/${user.id}/${team.id}`);
+                            }}
+                          >
+                            make admin
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </ListItem>
+                </div>
               );
             })}
-            <ListSubheader>Projects</ListSubheader>
+            {team.projects[0] && <ListSubheader>Projects</ListSubheader>}
             {team.projects.map((project) => {
               return (
-                <ListItem>
-                  <ListItemText primary={`${project.name}`} />
+                <ListItem style={{ textAlign: "center" }}>
+                  <Button
+                    onClick={() => history.push(`/project/${project.id}`)}
+                    style={{ margin: "auto" }}
+                  >
+                    {project.name}
+                  </Button>
                 </ListItem>
               );
             })}

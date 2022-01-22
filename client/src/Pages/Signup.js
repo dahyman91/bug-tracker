@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,11 +6,11 @@ import Link from "@mui/material/Link";
 import { useHistory } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LandingImg from "../Components/LandingImg";
+import Alert from "@mui/material/Alert";
+import { Stack } from "@mui/material";
 
 function Copyright() {
   return (
@@ -60,15 +59,32 @@ export default function SignUp({ setCurrentUser, currentUser }) {
         });
         history.push("/dashboard");
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error).flat()));
+        res.json().then((e) => setErrors(e.errors));
       }
     });
   }
 
   return (
     <>
+      {errors[0] && (
+        <div
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          {" "}
+          <Stack sx={{ width: "20vw" }} spacing={2}>
+            {errors.map((err) => {
+              return <Alert severity="error">{err}</Alert>;
+            })}
+          </Stack>
+        </div>
+      )}
       <Grid
-        style={{ marginTop: "10%", width: "80%", margin: "10% auto 0%" }}
+        style={{ marginTop: "10%", width: "80%", margin: "5% auto 0%" }}
         container
         spacing={2}
       >
@@ -172,7 +188,6 @@ export default function SignUp({ setCurrentUser, currentUser }) {
       </Grid>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </ThemeProvider>
     </>

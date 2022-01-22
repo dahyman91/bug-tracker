@@ -9,4 +9,9 @@ class User < ApplicationRecord
   has_many :memberships
   has_many :teams, through: :memberships
   has_many :projects, through: :roles
+
+  validates :first_name, :last_name, :password, presence: true
+  validates :email, uniqueness: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+
 end

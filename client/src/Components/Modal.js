@@ -40,7 +40,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
       {!tickets && (
         <Modal
           open={open}
-          onClose={handleClose}
+          // onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -57,9 +57,9 @@ export default function BasicModal({ open, setOpen, currentUser }) {
               track of your progress on a project. You can assign yourself a
               ticket, or any other team member who is assigned to that ticket's
               project. You will populate your dashboard once you are on a team,
-              assigned to a project as well as a ticket. This modal will
-              continue to greet you on your dashboard until you have gone
-              through these three steps.
+              included in a project and are included on a ticket. You will
+              continue to see this modal on your dashboard, until you have
+              completed the three steps below.
               <br />
               <br />
             </Typography>
@@ -87,7 +87,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <RadioButtonUncheckedIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Join a team" />
+                      <ListItemText primary="Create a team" />
                     </ListItemButton>
                   </ListItem>
                 )}

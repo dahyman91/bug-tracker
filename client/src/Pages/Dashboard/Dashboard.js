@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import BasicModal from "../../Components/Modal";
 import { useHistory } from "react-router-dom";
 import "./Dashboard.css";
-import { useModal } from "../../Components/ModalContext";
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -22,11 +22,14 @@ import ListItem from "@mui/material/ListItem";
 import InboxIcon from "@mui/icons-material/Inbox";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
-function Dashboard({ currentUser, setCurrentUser }) {
+function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   const [tickets, setTickets] = useState([]);
   const [submittedTickets, setSubmittedTickets] = useState([]);
-  const { open, setOpen } = useModal();
+  const [ticketNames, setTicketNames] = useState([]);
+  console.log(ticketNames);
+
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
@@ -51,6 +54,20 @@ function Dashboard({ currentUser, setCurrentUser }) {
   );
 
   let history = useHistory();
+
+  useEffect(() => {
+    currentUser.tickets_as_submitter &&
+      currentUser.tickets_as_submitter.map((ticket) => {
+        fetch(`/api/users/${ticket.submitter_id}`)
+          .then((r) => r.json())
+          .then((data) => {
+            setTicketNames([
+              `${data.first_name} ${data.last_name}`,
+              ...ticketNames,
+            ]);
+          });
+      });
+  }, []);
 
   const lowPriorityTickets = tickets.filter(
     (ticket) => ticket.priority === "Low"
@@ -96,6 +113,11 @@ function Dashboard({ currentUser, setCurrentUser }) {
   ).length;
 
   const ticketsByStatusOptions = {
+    scale: {
+      ticks: {
+        precision: 0,
+      },
+    },
     responsive: true,
     plugins: {
       legend: {
@@ -108,6 +130,11 @@ function Dashboard({ currentUser, setCurrentUser }) {
     },
   };
   const ticketsByPriorityOptions = {
+    scale: {
+      ticks: {
+        precision: 0,
+      },
+    },
     responsive: true,
     plugins: {
       legend: {
@@ -235,7 +262,7 @@ function Dashboard({ currentUser, setCurrentUser }) {
 
   return (
     <div>
-      {!currentUser.tickets && (
+      {currentUser?.tickets ?? (
         <BasicModal currentUser={currentUser} open={open} setOpen={setOpen} />
       )}
       <div className="chart-container">
@@ -259,12 +286,12 @@ function Dashboard({ currentUser, setCurrentUser }) {
           >
             <List dense>
               <Typography textAlign={"center"}>
-                Recent Assigned Tickets
+                Tickets Recently Assigned to You
               </Typography>
               {tickets
                 .slice(0, 5)
                 .reverse()
-                .map((ticket) => {
+                .map((ticket, index) => {
                   return (
                     <ListItem
                       onClick={() => history.push(`/ticket/${ticket.id}`)}
@@ -272,12 +299,9 @@ function Dashboard({ currentUser, setCurrentUser }) {
                     >
                       <ListItemButton>
                         <ListItemIcon>
-                          <InboxIcon />
+                          <ConfirmationNumberIcon />
                         </ListItemIcon>
-                        <ListItemText
-                          primary={ticket.title}
-                          // secondary={ticket.project_id}
-                        />
+                        <ListItemText primary={ticket.title} />
                       </ListItemButton>
                     </ListItem>
                   );
@@ -291,12 +315,12 @@ function Dashboard({ currentUser, setCurrentUser }) {
           >
             <List dense>
               <Typography textAlign={"center"}>
-                Recent Submitted Tickets
+                Tickets Recently Submitted By You
               </Typography>
               {submittedTickets
                 .slice(0, 5)
                 .reverse()
-                .map((ticket) => {
+                .map((ticket, index) => {
                   return (
                     <ListItem
                       onClick={() => history.push(`/ticket/${ticket.id}`)}
@@ -304,11 +328,11 @@ function Dashboard({ currentUser, setCurrentUser }) {
                     >
                       <ListItemButton>
                         <ListItemIcon>
-                          <InboxIcon />
+                          <ConfirmationNumberIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary={ticket.title}
-                          // secondary={ticket.project_id}
+                          secondary={`Assignee: ${ticketNames[index]}`}
                         />
                       </ListItemButton>
                     </ListItem>
