@@ -19,9 +19,6 @@ function Ticket({ currentUser }) {
 
   let history = useHistory();
 
-  const [assigneeName, setAssigneeName] = useState("");
-  const [submitterName, setSubmitterName] = useState("");
-  const [projectName, setProjectName] = useState("");
   const [isSumitter, setIsSubmitter] = useState(false);
   const [ticketName, setTicketName] = useState("");
   const [ticket, setTicket] = useState(null);
@@ -60,7 +57,6 @@ function Ticket({ currentUser }) {
       .then((r) => r.json())
       .then((data) => {
         setSelectedUser(data);
-        setAssigneeName(`${data.first_name} ${data.last_name}`);
       });
   }
   function getSubmitterName(id) {
@@ -70,14 +66,13 @@ function Ticket({ currentUser }) {
         if (currentUser.id === id) {
           setIsSubmitter(true);
         }
-        setSubmitterName(`${data.first_name} ${data.last_name}`);
       });
   }
+
   function getProjectName(id) {
     fetch(`/api/projects/${id}`)
       .then((r) => r.json())
       .then((data) => {
-        setProjectName(data.name);
         setSelectedProject(data);
         setTeamMembers(data.users);
       });
@@ -94,13 +89,11 @@ function Ticket({ currentUser }) {
   return (
     <>
       <>
-        {/* {isSumitter && <div>you are submitter</div>} */}
         <Grid
           container
           direction="row"
           justifyContent="center"
           alignItems="center"
-          // spacing={2}
         >
           <Grid item xs={4}>
             <Stack
@@ -236,7 +229,6 @@ function Ticket({ currentUser }) {
                   if (inputValue !== "" && !isExisting) {
                     filtered.push(inputValue);
                   }
-
                   return filtered;
                 }}
                 selectOnFocus
@@ -289,7 +281,6 @@ function Ticket({ currentUser }) {
 
         <div style={{ textAlign: "center" }}>
           <Button
-            // style={{ width: "10%", margin: "auto" }}
             onClick={() =>
               fetch(`/api/tickets/${ticket.id}`, {
                 method: "PATCH",

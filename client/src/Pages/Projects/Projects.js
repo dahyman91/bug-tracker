@@ -45,6 +45,7 @@ function Projects({ currentUser, setCurrentUser }) {
       },
     },
   ];
+
   const projects = [];
   currentUser.teams.map((team) =>
     team.projects.map((project) => projects.push(project))

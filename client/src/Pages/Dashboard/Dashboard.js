@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import BasicModal from "../../Components/Modal";
 import { useHistory } from "react-router-dom";
 import "./Dashboard.css";
+import { useModal } from "../../Components/ModalContext";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -23,9 +24,9 @@ import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
 
 function Dashboard({ currentUser, setCurrentUser }) {
-  const [open, setOpen] = useState(true);
   const [tickets, setTickets] = useState([]);
   const [submittedTickets, setSubmittedTickets] = useState([]);
+  const { open, setOpen } = useModal();
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {

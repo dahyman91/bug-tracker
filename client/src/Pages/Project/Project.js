@@ -36,9 +36,6 @@ function Project({ currentUser }) {
       });
   }, [project]);
 
-  console.log(isLead);
-  // console.log(project.roles.map((role) => role));
-
   useEffect(() => {
     fetch(`/api/projects/${id}`)
       .then((r) => r.json())
@@ -50,7 +47,6 @@ function Project({ currentUser }) {
     { field: "first_name", headerName: "First name", width: 130 },
     { field: "last_name", headerName: "Last name", width: 130 },
     { field: "email", headerName: "Email", width: 190 },
-
     {
       field: "role",
       headerName: "Role",
@@ -58,8 +54,6 @@ function Project({ currentUser }) {
       width: 130,
     },
   ];
-
-  // console.log(project);
 
   return (
     <Box
