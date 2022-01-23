@@ -66,6 +66,7 @@ export default function Navbar({ setCurrentUser, currentUser }) {
         icon={<PersonPinIcon />}
         style={{ position: "absolute", left: "5px" }}
         label={currentUser.first_name}
+        disabled
       />
     </Tabs>
   );

@@ -58,12 +58,14 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   useEffect(() => {
     currentUser.tickets_as_submitter &&
       currentUser.tickets_as_submitter.map((ticket) => {
+        console.log(ticket);
         fetch(`/api/users/${ticket.submitter_id}`)
           .then((r) => r.json())
           .then((data) => {
+            console.log(data);
             setTicketNames([
-              `${data.first_name} ${data.last_name}`,
               ...ticketNames,
+              `${data.first_name} ${data.last_name}`,
             ]);
           });
       });

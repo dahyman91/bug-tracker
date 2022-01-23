@@ -4,11 +4,12 @@ import { useHistory } from "react-router-dom";
 import AddItemStepper from "../../Components/Stepper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { Select, MenuItem } from "@mui/material";
+import { Select, MenuItem, Typography } from "@mui/material";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { FormHelperText } from "@mui/material";
+import { Grid } from "@mui/material";
 
 function CreateTicket({ currentUser, setCurrentUser }) {
   const [selectedProject, setSelectedProject] = useState([]);
@@ -104,6 +105,9 @@ function CreateTicket({ currentUser, setCurrentUser }) {
   function firstStep() {
     return (
       <div>
+        <Typography style={{ textAlign: "center", padding: "10px" }}>
+          Add Ticket Description
+        </Typography>
         <Stack
           component="form"
           sx={{
@@ -178,116 +182,306 @@ function CreateTicket({ currentUser, setCurrentUser }) {
 
   function secondStep() {
     return (
-      <Stack
-        component="form"
-        sx={{
-          width: "40ch",
-          m: "auto",
-        }}
-        spacing={2}
-        noValidate
-        autoComplete="off"
-      >
-        <Autocomplete
-          value={category}
-          onChange={(event, newValue) => {
-            if (typeof newValue === "string") {
-              setCategory(newValue);
-            } else if (newValue && newValue.inputValue) {
-              // Create a new value from the user input
-              setCategory(newValue);
-            } else {
-              setCategory(newValue);
-            }
+      <div>
+        <Typography style={{ textAlign: "center", padding: "10px" }}>
+          Add Ticket Details
+        </Typography>
+        <Stack
+          component="form"
+          sx={{
+            width: "40ch",
+            m: "auto",
           }}
-          filterOptions={(options, params) => {
-            const filtered = filter(options, params);
+          spacing={2}
+          noValidate
+          autoComplete="off"
+        >
+          <Autocomplete
+            value={category}
+            onChange={(event, newValue) => {
+              if (typeof newValue === "string") {
+                setCategory(newValue);
+              } else if (newValue && newValue.inputValue) {
+                // Create a new value from the user input
+                setCategory(newValue);
+              } else {
+                setCategory(newValue);
+              }
+            }}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
 
-            const { inputValue } = params;
-            // Suggest the creation of a new value
-            const isExisting = options.some(
-              (option) => inputValue === option.title
-            );
-            if (inputValue !== "" && !isExisting) {
-              filtered.push(inputValue);
-            }
+              const { inputValue } = params;
+              // Suggest the creation of a new value
+              const isExisting = options.some(
+                (option) => inputValue === option.title
+              );
+              if (inputValue !== "" && !isExisting) {
+                filtered.push(inputValue);
+              }
 
-            return filtered;
-          }}
-          selectOnFocus
-          clearOnBlur
-          handleHomeEndKeys
-          id="free-solo-with-text-demo"
-          options={categories}
-          getOptionLabel={(option) => {
-            // Value selected with enter, right from the input
-            if (typeof option === "string") {
+              return filtered;
+            }}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            id="free-solo-with-text-demo"
+            options={categories}
+            getOptionLabel={(option) => {
+              // Value selected with enter, right from the input
+              if (typeof option === "string") {
+                return option;
+              }
+              // Add "xxx" option created dynamically
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              // Regular option
               return option;
-            }
-            // Add "xxx" option created dynamically
-            if (option.inputValue) {
-              return option.inputValue;
-            }
-            // Regular option
-            return option;
-          }}
-          renderOption={(props, option) => <li {...props}>{option}</li>}
-          sx={{ width: 300 }}
-          freeSolo
-          renderInput={(params) => (
-            <TextField {...params} label="Choose or Create Category" />
-          )}
-        />
-        <FormControl>
-          <InputLabel htmlFor="status-select">Status</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="status-select"
-            value={status}
-            label="Status"
-            onChange={(e) => {
-              setStatus(e.target.value);
             }}
-          >
-            {statuses.map((status) => {
-              return (
-                <MenuItem value={status} key={status}>
-                  {status}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          <FormHelperText id="my-helper-text">
-            We'll never share your email.
-          </FormHelperText>
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="priority-select">Priority</InputLabel>
-          <Select
-            id="priority-select"
-            value={priority}
-            label="Priority"
-            onChange={(e) => {
-              setPriority(e.target.value);
-            }}
-          >
-            {priorities.map((priority) => {
-              return (
-                <MenuItem value={priority} key={priority}>
-                  {priority}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          <FormHelperText id="my-helper-text">
-            We'll never share your email.
-          </FormHelperText>
-        </FormControl>
-      </Stack>
+            renderOption={(props, option) => <li {...props}>{option}</li>}
+            sx={{ width: "100%" }}
+            freeSolo
+            renderInput={(params) => (
+              <TextField {...params} label="Choose or Create Category" />
+            )}
+          />
+          <FormControl>
+            <InputLabel htmlFor="status-select">Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="status-select"
+              value={status}
+              label="Status"
+              onChange={(e) => {
+                setStatus(e.target.value);
+              }}
+            >
+              {statuses.map((status) => {
+                return (
+                  <MenuItem value={status} key={status}>
+                    {status}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="priority-select">Priority</InputLabel>
+            <Select
+              id="priority-select"
+              value={priority}
+              label="Priority"
+              onChange={(e) => {
+                setPriority(e.target.value);
+              }}
+            >
+              {priorities.map((priority) => {
+                return (
+                  <MenuItem value={priority} key={priority}>
+                    {priority}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Stack>
+      </div>
     );
   }
   function thirdStep() {
-    return <div>three</div>;
+    return (
+      <div>
+        <Typography style={{ textAlign: "center", padding: "10px" }}>
+          Review & Submit Ticket
+        </Typography>
+        <Grid container style={{ margin: "auto 0" }} spacing={3}>
+          <Grid item xs={6}>
+            <Stack
+              component="form"
+              sx={{
+                width: "40ch",
+                m: "auto",
+              }}
+              spacing={2}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-basic"
+                label="Ticket Name"
+                variant="outlined"
+                onChange={(e) => setTicketName(e.target.value)}
+                value={ticketName}
+                disabled
+              />
+              <FormControl fullWidth>
+                <InputLabel id="user-select-label">Project</InputLabel>
+                <Select
+                  disabled
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedProject}
+                  label="Project"
+                  onChange={(e) => {
+                    setSelectedProject(e.target.value);
+                  }}
+                >
+                  {projects.map((project) => {
+                    return (
+                      <MenuItem value={project} id={project.id}>
+                        {project.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              {teamMembers && (
+                <FormControl fullWidth>
+                  <InputLabel id="user-select-label">
+                    Ticket Assignee
+                  </InputLabel>
+                  <Select
+                    disabled
+                    labelId="user-select-label"
+                    id="user-select"
+                    value={selectedUser}
+                    label="Ticket Asignee"
+                    onChange={(e) => {
+                      setSelectedUser(e.target.value);
+                    }}
+                  >
+                    {teamMembers.map((user) => {
+                      return (
+                        <MenuItem value={user} id={user.id}>
+                          {user.first_name} {user.last_name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              )}
+            </Stack>
+          </Grid>
+          <Grid item xs={4}>
+            <Stack
+              component="form"
+              sx={{
+                width: "40ch",
+                m: "auto",
+              }}
+              spacing={2}
+              noValidate
+              autoComplete="off"
+            >
+              <Autocomplete
+                disabled
+                value={category}
+                onChange={(event, newValue) => {
+                  if (typeof newValue === "string") {
+                    setCategory(newValue);
+                  } else if (newValue && newValue.inputValue) {
+                    // Create a new value from the user input
+                    setCategory(newValue);
+                  } else {
+                    setCategory(newValue);
+                  }
+                }}
+                filterOptions={(options, params) => {
+                  const filtered = filter(options, params);
+
+                  const { inputValue } = params;
+                  // Suggest the creation of a new value
+                  const isExisting = options.some(
+                    (option) => inputValue === option.title
+                  );
+                  if (inputValue !== "" && !isExisting) {
+                    filtered.push(inputValue);
+                  }
+
+                  return filtered;
+                }}
+                selectOnFocus
+                clearOnBlur
+                handleHomeEndKeys
+                id="free-solo-with-text-demo"
+                options={categories}
+                getOptionLabel={(option) => {
+                  // Value selected with enter, right from the input
+                  if (typeof option === "string") {
+                    return option;
+                  }
+                  // Add "xxx" option created dynamically
+                  if (option.inputValue) {
+                    return option.inputValue;
+                  }
+                  // Regular option
+                  return option;
+                }}
+                renderOption={(props, option) => <li {...props}>{option}</li>}
+                freeSolo
+                renderInput={(params) => (
+                  <TextField {...params} label="Choose or Create Category" />
+                )}
+              />
+              <FormControl>
+                <InputLabel htmlFor="status-select">Status</InputLabel>
+                <Select
+                  disabled
+                  labelId="demo-simple-select-label"
+                  id="status-select"
+                  value={status}
+                  label="Status"
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                  }}
+                >
+                  {statuses.map((status) => {
+                    return (
+                      <MenuItem value={status} key={status}>
+                        {status}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <InputLabel htmlFor="priority-select">Priority</InputLabel>
+                <Select
+                  disabled
+                  id="priority-select"
+                  value={priority}
+                  label="Priority"
+                  onChange={(e) => {
+                    setPriority(e.target.value);
+                  }}
+                >
+                  {priorities.map((priority) => {
+                    return (
+                      <MenuItem value={priority} key={priority}>
+                        {priority}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Stack>
+          </Grid>
+        </Grid>
+        <div style={{ display: "flex", padding: "20px" }}>
+          <TextField
+            style={{ width: "50%", margin: "auto" }}
+            disabled
+            id="outlined-multiline-flexible"
+            label="Ticket Description"
+            onChange={(e) => setTicketDescription(e.target.value)}
+            value={ticketDescription}
+            multiline
+            rows={4}
+          />
+        </div>
+      </div>
+    );
   }
   return (
     <div>
