@@ -8,6 +8,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import DataTable from "../../Components/DataTable";
 import Grid from "@mui/material/Grid";
+import { Button } from "@mui/material";
+import { FormControl, FormHelperText, Typography } from "@mui/material";
 
 function CreateProject({ currentUser, setCurrentUser }) {
   const [projectName, setProjectName] = useState("");
@@ -21,7 +23,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
   let history = useHistory();
 
   const steps = ["Add Project Details", "Assign Roles", "Review/Add Project"];
-  const roleOptions = ["Project Lead", "Project Contributor"];
+  const roleOptions = ["Project Lead", "Developer", "Designer", "QA"];
 
   const teams = currentUser.teams;
 
@@ -41,17 +43,42 @@ function CreateProject({ currentUser, setCurrentUser }) {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "first_name", headerName: "First name", width: 130 },
-    { field: "last_name", headerName: "Last name", width: 130 },
-    { field: "email", headerName: "Email", width: 190 },
-
     {
       field: "role",
       headerName: "Role",
       type: "string",
       width: 130,
     },
+    { field: "first_name", headerName: "First name", width: 100 },
+    { field: "last_name", headerName: "Last name", width: 100 },
+    { field: "email", headerName: "Email", width: 190 },
+    { field: "id", headerName: "ID", width: 70 },
+    // {
+    //   field: "action",
+    //   headerName: "Remove Role",
+    //   sortable: false,
+    //   renderCell: (params) => {
+    //     const onClick = (e) => {
+    //       // e.stopPropagation(); // don't select this row after clicking
+
+    //       const api = params.api;
+    //       const thisRow = {};
+
+    //       api
+    //         .getAllColumns()
+    //         .filter((c) => c.field === "id" && !!c)
+    //         .forEach(
+    //           (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
+    //         );
+
+    //       let newRoles = roles.filter((role) => role.id !== thisRow.id);
+    //       setRoles(newRoles);
+    //       console.log(thisRow.id);
+    //     };
+
+    //     return <Button onClick={onClick}>View Ticket</Button>;
+    //   },
+    // },
   ];
 
   function firstStep() {
@@ -60,13 +87,14 @@ function CreateProject({ currentUser, setCurrentUser }) {
         component="form"
         sx={{
           width: "40ch",
-          m: "10% auto",
+          m: "auto",
           height: "40vh",
         }}
         spacing={2}
         noValidate
         autoComplete="off"
       >
+        <Typography style={{ margin: "auto" }}>Add Project Details</Typography>
         <TextField
           id="outlined-basic"
           label="Project Name"
@@ -116,22 +144,35 @@ function CreateProject({ currentUser, setCurrentUser }) {
   function secondStep() {
     return (
       <>
+        <Typography style={{ textAlign: "center", padding: "1%" }}>
+          Assign Team Members Roles
+        </Typography>
         {users && (
           <Box justifyContent="center" style={{ display: "flex" }}>
-            <Autocomplete
-              id="combo-box-demo"
-              options={users}
-              getOptionLabel={(option) =>
-                `${option.first_name} ${option.last_name}`
-              }
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Team Member" variant="outlined" />
-              )}
-              onChange={(event, newValue) => {
-                setSelectedUser(newValue, null, " ");
-              }}
-            />
+            <FormControl>
+              <Autocomplete
+                id="combo-box-demo"
+                options={users}
+                getOptionLabel={(option) =>
+                  `${option.first_name} ${option.last_name}`
+                }
+                style={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Team Member"
+                    variant="outlined"
+                  />
+                )}
+                onChange={(event, newValue) => {
+                  setSelectedUser(newValue, null, " ");
+                }}
+              />
+              <FormHelperText>
+                Be sure to assign yourself a role!
+              </FormHelperText>
+            </FormControl>
+
             <Autocomplete
               disablePortal
               disableClearable
@@ -149,28 +190,31 @@ function CreateProject({ currentUser, setCurrentUser }) {
                 setSelectedRole(newValue);
               }}
             />
-            {selectedRole && selectedUser && (
-              <button
-                onClick={() => {
-                  const updatedRoles = roles.map((obj) => {
-                    if (obj.id === selectedUser.id) {
-                      return { ...obj, role: selectedRole };
-                    }
-                    return obj;
-                  });
-                  setRoles(updatedRoles);
-                }}
-              >
-                Submit Role
-              </button>
-            )}
           </Box>
+        )}
+        {selectedRole && selectedUser && (
+          <div style={{ width: "100%", display: "flex" }}>
+            <Button
+              style={{ margin: "auto", padding: "15px" }}
+              onClick={() => {
+                const updatedRoles = roles.map((obj) => {
+                  if (obj.id === selectedUser.id) {
+                    return { ...obj, role: selectedRole };
+                  }
+                  return obj;
+                });
+                setRoles(updatedRoles);
+              }}
+            >
+              Submit Role
+            </Button>
+          </div>
         )}
         <DataTable
           columns={columns}
           rows={roleAssignments}
           checkboxSelection={false}
-          width="52%"
+          width="60%"
         />
       </>
     );
@@ -178,46 +222,63 @@ function CreateProject({ currentUser, setCurrentUser }) {
 
   function thirdStep() {
     return (
-      <Box sx={{ flexGrow: 1, width: "100%" }}>
-        <Grid style={{ margin: "0 auto" }} container spacing={8}>
-          <Grid textAlign="center" item>
-            <Stack component="form" spacing={2} noValidate autoComplete="off">
-              <TextField
-                id="outlined-basic"
-                label="Project Name"
-                variant="outlined"
-                value={projectName}
-                disabled
-              />
-              <TextField
-                id="outlined-multiline-flexible"
-                label="Team Name"
-                value={team.name}
-                multiline
-                rows={1}
-                disabled
-              />
+      <>
+        {console.log(roles)}
+        {team && roles[0].role === "Not Assigned" ? (
+          <Box sx={{ flexGrow: 1, width: "100%" }}>
+            <Typography style={{ textAlign: "center" }}>
+              You have not assigned yourself a role. Please go back and assign
+              yourself a role for this project.
+            </Typography>
+          </Box>
+        ) : (
+          <Box sx={{ flexGrow: 1, width: "100%" }}>
+            <Grid style={{ margin: "0 auto" }} container spacing={8}>
+              <Grid textAlign="center" item>
+                <Stack
+                  component="form"
+                  spacing={2}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <TextField
+                    id="outlined-basic"
+                    label="Project Name"
+                    variant="outlined"
+                    value={projectName}
+                    disabled
+                  />
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="Team Name"
+                    value={team.name}
+                    multiline
+                    rows={1}
+                    disabled
+                  />
 
-              <TextField
-                id="outlined-multiline-flexible"
-                label="Project Description"
-                value={projectDescription}
-                multiline
-                rows={4}
-                disabled
-              />
-            </Stack>
-          </Grid>
-          <Grid textAlign="center" item style={{ width: "55%" }}>
-            <DataTable
-              columns={columns}
-              rows={roleAssignments}
-              checkboxSelection={false}
-              // width="52%"
-            />
-          </Grid>
-        </Grid>
-      </Box>
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="Project Description"
+                    value={projectDescription}
+                    multiline
+                    rows={4}
+                    disabled
+                  />
+                </Stack>
+              </Grid>
+              <Grid textAlign="center" item style={{ width: "55%" }}>
+                <DataTable
+                  columns={columns}
+                  rows={roleAssignments}
+                  checkboxSelection={false}
+                  // width="52%"
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+      </>
     );
   }
   function handleSubmit(roles, team, projectName, projectDescription) {

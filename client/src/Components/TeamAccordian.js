@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Accordion from "@mui/material/Accordion";
-import ListItemText from "@mui/material/ListItemText";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
@@ -74,16 +73,14 @@ function TeamAccordian({
                   <ListItem
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography>
+                    <Typography style={{ fontSize: "14px" }}>
+                      {isAdminArr[user.id] && "Admin: "}
                       {user.first_name} {user.last_name}
-                      {isAdminArr[user.id] && ", Admin"} (email {user.email})
+                      (email {user.email})
                     </Typography>
                     {adminTeams.includes(team.id) && (
-                      <div style={{}}>
-                        <Button
-                          // style={{ margin: "auto" }}
-                          onClick={() => handleRemoveMember(user.id)}
-                        >
+                      <div>
+                        <Button onClick={() => handleRemoveMember(user.id)}>
                           remove member
                         </Button>
                         {isAdminArr[user.id] ? (

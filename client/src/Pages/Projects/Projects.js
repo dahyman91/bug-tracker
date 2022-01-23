@@ -18,12 +18,10 @@ function Projects({ currentUser, setCurrentUser }) {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "Project ID", width: 135 },
-    { field: "name", headerName: "Project Name", width: 200 },
-    { field: "description", headerName: "Project Description", width: 450 },
     {
       field: "action",
       headerName: "View Details",
+      width: 200,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e) => {
@@ -41,9 +39,13 @@ function Projects({ currentUser, setCurrentUser }) {
 
           history.push(`/project/${JSON.stringify(thisRow.id, null, 4)}`);
         };
-        return <Button onClick={onClick}>Click</Button>;
+        return <Button onClick={onClick}>View Project</Button>;
       },
     },
+
+    { field: "name", headerName: "Project Name", width: 250 },
+    { field: "description", headerName: "Project Description", width: 550 },
+    { field: "id", headerName: "Project ID", width: 135 },
   ];
 
   const projects = [];

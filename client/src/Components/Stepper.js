@@ -71,7 +71,7 @@ export default function AddItemStepper({
   }
 
   return (
-    <Box sx={{ width: "80%", margin: "auto" }}>
+    <Box sx={{ width: "70%", margin: "auto" }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -122,7 +122,7 @@ export default function AddItemStepper({
             )}
 
             <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              {activeStep === steps.length - 1 ? "Submit" : "Next"}
             </Button>
           </Box>
         </React.Fragment>

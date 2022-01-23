@@ -2,9 +2,6 @@ import "./Tickets.css";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { useHistory } from "react-router-dom";
-
-import { GridApi, GridCellValue } from "@mui/x-data-grid";
-
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -123,17 +120,10 @@ function Tickets({ currentUser, setCurrentUser }) {
   }
 
   const columns = [
-    { field: "title", headerName: "Name", width: 100 },
-    { field: "description", headerName: "Description", width: 150 },
-    { field: "priority", headerName: "Priority", width: 100 },
-    { field: "category", headerName: "Category", width: 100 },
-    { field: "project", headerName: "Project", width: 200 },
-    { field: "status", headerName: "Status", width: 100 },
-    { field: "assignee", headerName: "Ticket Assigned to", width: 300 },
-    { field: "id", headerName: "ID", width: 50 },
     {
       field: "action",
       headerName: "View Details",
+      width: 105,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e) => {
@@ -152,9 +142,19 @@ function Tickets({ currentUser, setCurrentUser }) {
           history.push(`/ticket/${JSON.stringify(thisRow.id, null, 4)}`);
         };
 
-        return <Button onClick={onClick}>Click</Button>;
+        return <Button onClick={onClick}>View Ticket</Button>;
       },
     },
+    { field: "title", headerName: "Ticket Name", width: 125 },
+    { field: "project", headerName: "Project Name", width: 125 },
+    { field: "description", headerName: "Description", width: 150 },
+    { field: "priority", headerName: "Priority", width: 80 },
+    { field: "status", headerName: "Status", width: 175 },
+    { field: "category", headerName: "Category", width: 125 },
+
+    { field: "assignee", headerName: "Ticket Assigned to", width: 150 },
+    { field: "submitter", headerName: "Ticket Created by", width: 150 },
+    { field: "id", headerName: "ID", width: 50 },
   ];
 
   // Tabs Logic
@@ -199,7 +199,6 @@ function Tickets({ currentUser, setCurrentUser }) {
   return (
     <Box sx={{ width: "80%", margin: "auto", textAlign: "center" }}>
       <Typography>My Tickets</Typography>
-
       <Button onClick={() => history.push("/create-ticket")} style={{}}>
         Add New Ticket
       </Button>
