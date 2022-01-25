@@ -1,4 +1,3 @@
-import "./App.css";
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
@@ -23,9 +22,20 @@ import CreateTicket from "./Pages/CreateTicket/CreateTicket";
 import Navbar from "./Components/Navbar";
 import SideNav from "./Components/SpeedDial";
 
+//Theme
+import { createTheme, ThemeProvider } from "@mui/material";
+
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [open, setOpen] = useState(true);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#2e7d32",
+      },
+    },
+  });
 
   useEffect(() => {
     fetch("/api/me").then((r) => {
@@ -41,12 +51,20 @@ function App() {
     return (
       <div className="app">
         <Switch>
-          <Route exact path="/">
-            <SignUp currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </Route>
-          <Route exact path="/log-in">
-            <LogIn currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </Route>
+          <ThemeProvider theme={theme}>
+            <Route exact path="/">
+              <SignUp
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+              />
+            </Route>
+            <Route exact path="/log-in">
+              <LogIn
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+              />
+            </Route>
+          </ThemeProvider>
         </Switch>
       </div>
     );
@@ -62,103 +80,134 @@ function App() {
           </Route>
 
           {/* Speed Dial Routes */}
+          <ThemeProvider theme={theme}>
+            <Route exact path="/create-team">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <CreateTeam currentUser={currentUser} />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
+            <Route exact path="/create-project">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <CreateProject
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+              />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
+            <Route exact path="/create-ticket">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <CreateTicket
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
 
-          <Route exact path="/create-team">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <CreateTeam currentUser={currentUser} />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
-          <Route exact path="/create-project">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <CreateProject
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-            />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
-          <Route exact path="/create-ticket">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <CreateTicket
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
+            {/* Main Pages */}
 
-          {/* Main Pages */}
+            <Route exact path="/dashboard">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <Dashboard
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+                open={open}
+                setOpen={setOpen}
+              />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
+            <Route exact path="/tickets">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <Tickets
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
+            <Route exact path="/teams">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <Teams
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
+            <Route exact path="/projects">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <Projects
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+              />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
 
-          <Route exact path="/dashboard">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Dashboard
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-              open={open}
-              setOpen={setOpen}
-            />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
-          <Route exact path="/tickets">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Tickets
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
-          <Route exact path="/teams">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Teams setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
-          <Route exact path="/projects">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Projects
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-            />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
+            {/* Specific Product and Ticket Routes */}
 
-          {/* Specific Product and Ticket Routes */}
+            <Route exact path="/project/:id">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <Project currentUser={currentUser} />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
 
-          <Route exact path="/project/:id">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Project currentUser={currentUser} />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
-
-          <Route exact path="/ticket/:id">
-            <Navbar setCurrentUser={setCurrentUser} currentUser={currentUser} />
-            <Ticket currentUser={currentUser} />
-            <SideNav
-              setCurrentUser={setCurrentUser}
-              currentUser={currentUser}
-            />
-          </Route>
+            <Route exact path="/ticket/:id">
+              <Navbar
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <Ticket currentUser={currentUser} />
+              <SideNav
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+            </Route>
+          </ThemeProvider>
         </Switch>
       </div>
     );

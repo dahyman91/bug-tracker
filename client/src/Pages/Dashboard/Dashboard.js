@@ -14,12 +14,13 @@ import {
   Title,
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
+import LinearProgress from "@mui/material/LinearProgress";
+
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItem from "@mui/material/ListItem";
-import InboxIcon from "@mui/icons-material/Inbox";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
@@ -28,7 +29,9 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   const [tickets, setTickets] = useState([]);
   const [submittedTickets, setSubmittedTickets] = useState([]);
   const [ticketNames, setTicketNames] = useState([]);
-  console.log(ticketNames);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingTickets, setLoadingTickets] = useState(true);
+  console.log(ticketNames[0]);
 
   useEffect(() => {
     fetch("/api/me").then((r) => {
@@ -38,6 +41,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
           setTickets(user.tickets_as_assignee);
           setSubmittedTickets(user.tickets_as_submitter);
           user.tickets_as_assignee[0] && setOpen(false);
+          setIsLoading(false);
         });
       }
     });
@@ -56,13 +60,11 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   let history = useHistory();
 
   useEffect(() => {
-    currentUser.tickets_as_submitter &&
-      currentUser.tickets_as_submitter.map((ticket) => {
-        console.log(ticket);
-        fetch(`/api/users/${ticket.submitter_id}`)
+    currentUser &&
+      currentUser.tickets_as_submitter.slice(0, 5).map((ticket) => {
+        fetch(`/api/users/${ticket.assignee_id}`)
           .then((r) => r.json())
           .then((data) => {
-            console.log(data);
             setTicketNames([
               ...ticketNames,
               `${data.first_name} ${data.last_name}`,
@@ -160,18 +162,6 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
       },
     },
   };
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: "Tickets by Priority",
-      },
-    },
-  };
 
   const ticketsByPriorityData = {
     labels: ["Low", "Medium", "High"],
@@ -262,7 +252,11 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
     ],
   };
 
-  return (
+  return isLoading ? (
+    <Box sx={{ position: "absolute", top: "20%", width: "100%" }}>
+      <LinearProgress />
+    </Box>
+  ) : (
     <div>
       {currentUser?.tickets ?? (
         <BasicModal currentUser={currentUser} open={open} setOpen={setOpen} />
@@ -291,7 +285,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
                 Tickets Recently Assigned to You
               </Typography>
               {tickets
-                .slice(0, 5)
+                .slice(-5)
                 .reverse()
                 .map((ticket, index) => {
                   return (
@@ -315,6 +309,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
           <Box
             sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
+            {/* {!loadingTickets && ( */}
             <List dense>
               <Typography textAlign={"center"}>
                 Tickets Recently Submitted By You
@@ -332,15 +327,17 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
                         <ListItemIcon>
                           <ConfirmationNumberIcon />
                         </ListItemIcon>
+
                         <ListItemText
                           primary={ticket.title}
-                          secondary={`Assignee: ${ticketNames[index]}`}
+                          // secondary={`Assignee: ${ticketNames[index]}`}
                         />
                       </ListItemButton>
                     </ListItem>
                   );
                 })}
             </List>
+            {/* )} */}
           </Box>
         </div>
       </div>

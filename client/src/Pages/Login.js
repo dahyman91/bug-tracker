@@ -1,26 +1,20 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LandingImg from "../Components/LandingImg";
-import { FormControl, FormHelperText } from "@mui/material";
+import { FormControl } from "@mui/material";
 import { Stack, Alert } from "@mui/material";
+import { CssBaseline } from "@material-ui/core";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center">
+    <Typography variant="body2" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://www.linkedin.com/in/dan-hyman-dev/">
         Dan Hyman
@@ -30,7 +24,7 @@ function Copyright() {
   );
 }
 
-const theme = createTheme();
+// const theme = createTheme();
 
 export default function LogIn({ setCurrentUser, currentUser }) {
   let history = useHistory();
@@ -164,11 +158,8 @@ export default function LogIn({ setCurrentUser, currentUser }) {
           </FormControl>
         </Grid>
       </Grid>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </ThemeProvider>
+      <CssBaseline />
+      <Copyright sx={{ mt: 8, mb: 4 }} />
     </>
   );
 }

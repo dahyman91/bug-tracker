@@ -13,6 +13,12 @@ class Api::TeamsController < ApplicationController
     render json: team
   end
 
+  def destroy
+    team = Team.find_by(id: params[:id])
+    team.destroy
+    head :no_content
+  end
+
   private
 
   def team_params

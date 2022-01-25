@@ -26,7 +26,6 @@ const style = {
 
 export default function BasicModal({ open, setOpen, currentUser }) {
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   let history = useHistory();
 
@@ -40,7 +39,6 @@ export default function BasicModal({ open, setOpen, currentUser }) {
       {!tickets && (
         <Modal
           open={open}
-          // onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >

@@ -40,7 +40,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
         });
       }
     });
-  }, []);
+  }, [setCurrentUser]);
 
   const columns = [
     {
@@ -53,32 +53,6 @@ function CreateProject({ currentUser, setCurrentUser }) {
     { field: "last_name", headerName: "Last name", width: 100 },
     { field: "email", headerName: "Email", width: 190 },
     { field: "id", headerName: "ID", width: 70 },
-    // {
-    //   field: "action",
-    //   headerName: "Remove Role",
-    //   sortable: false,
-    //   renderCell: (params) => {
-    //     const onClick = (e) => {
-    //       // e.stopPropagation(); // don't select this row after clicking
-
-    //       const api = params.api;
-    //       const thisRow = {};
-
-    //       api
-    //         .getAllColumns()
-    //         .filter((c) => c.field === "id" && !!c)
-    //         .forEach(
-    //           (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
-    //         );
-
-    //       let newRoles = roles.filter((role) => role.id !== thisRow.id);
-    //       setRoles(newRoles);
-    //       console.log(thisRow.id);
-    //     };
-
-    //     return <Button onClick={onClick}>View Ticket</Button>;
-    //   },
-    // },
   ];
 
   function firstStep() {

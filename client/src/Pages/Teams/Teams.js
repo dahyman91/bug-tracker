@@ -30,6 +30,17 @@ export default function Teams({ setCurrentUser, currentUser }) {
     setTeams(updatedTeams);
   }
 
+  function handleDeleteTeam(id) {
+    const updatedTeams = teams.filter((t) => t.id !== id);
+    fetch(`/api/teams/${id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    setTeams(updatedTeams);
+  }
+
   let history = useHistory();
 
   return (
@@ -48,6 +59,7 @@ export default function Teams({ setCurrentUser, currentUser }) {
               adminTeams={adminTeams}
               team={team}
               handleRemoveTeam={handleRemoveTeam}
+              handleDeleteTeam={handleDeleteTeam}
             />
           ))}
       </div>

@@ -12,7 +12,7 @@ import { Button } from "@mui/material";
 function Project({ currentUser }) {
   const [project, setProject] = useState("");
   const [detailRoles, setDetailRoles] = useState([]);
-  const [isLead, setIsLead] = useState(false);
+  const [userRole, setUserRole] = useState("");
   const [ticketRows, setTicketRows] = useState([]);
   const { id } = useParams();
 
@@ -23,8 +23,8 @@ function Project({ currentUser }) {
         fetch(`/api/show_user/${role.user_id}`)
           .then((r) => r.json())
           .then((user) => {
-            if (currentUser.id === user.id && role.name === "Project Lead") {
-              setIsLead(true);
+            if (currentUser.id === user.id) {
+              setUserRole(role.name);
             }
             let newRole = {
               first_name: user.first_name,
@@ -128,9 +128,7 @@ function Project({ currentUser }) {
   return (
     <>
       <>
-        {isLead && (
-          <div style={{ textAlign: "center" }}>You Are Project Lead</div>
-        )}
+        <div style={{ textAlign: "center" }}>Your Role: {userRole}</div>
       </>
       <Box
         sx={{

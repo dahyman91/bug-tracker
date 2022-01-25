@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resources :projects
     resources :comments
     resources :memberships
-    resources :teams, only: %i[index create show]
+    resources :teams
     post '/login', to: 'sessions#create'
     get '/auth', to: 'users#show'
     get '/me', to: 'users#show'

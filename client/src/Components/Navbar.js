@@ -2,7 +2,6 @@ import * as React from "react";
 import { useHistory } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import PhoneIcon from "@mui/icons-material/Phone";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";

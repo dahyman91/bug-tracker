@@ -14,8 +14,7 @@ function TeamAccordian({
   team,
   adminTeams,
   handleRemoveTeam,
-  currentUser,
-  fetchInfo,
+  handleDeleteTeam,
 }) {
   const [members, setMembers] = useState(team.users);
   const [isAdminArr, setIsAdminArr] = useState({});
@@ -38,7 +37,7 @@ function TeamAccordian({
           }
         })
     );
-  }, []);
+  }, [members, team.id]);
 
   function handleRemoveMember(id) {
     let updatedTeam = members.filter((member) => member.id !== id);
@@ -127,9 +126,32 @@ function TeamAccordian({
                 </ListItem>
               );
             })}
-            <Button onClick={() => handleRemoveTeam(team.id)}>
-              Leave Team
-            </Button>
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={() => handleRemoveTeam(team.id)}
+              >
+                Leave Team
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => history.push("/create-project")}
+              >
+                Add Project
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => handleDeleteTeam(team.id)}
+              >
+                Delete Team
+              </Button>
+            </div>
           </List>
         </AccordionDetails>
       </Accordion>
