@@ -54,7 +54,6 @@ export default function LogIn({ setCurrentUser, currentUser }) {
       }
     });
   };
-  console.log(errors);
 
   return (
     <>

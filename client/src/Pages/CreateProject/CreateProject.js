@@ -197,8 +197,8 @@ function CreateProject({ currentUser, setCurrentUser }) {
   function thirdStep() {
     return (
       <>
-        {console.log(roles)}
-        {team && roles[0].role === "Not Assigned" ? (
+        {roles.filter((role) => role.email === currentUser.email)[0].role ===
+        "Not Assigned" ? (
           <Box sx={{ flexGrow: 1, width: "100%" }}>
             <Typography style={{ textAlign: "center" }}>
               You have not assigned yourself a role. Please go back and assign

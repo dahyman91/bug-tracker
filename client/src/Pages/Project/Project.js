@@ -7,13 +7,24 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import DataTable from "../../Components/DataTable";
 import Grid from "@mui/material/Grid";
+import {
+  FormControl,
+  Autocomplete,
+  FormHelperText,
+  LinearProgress,
+} from "@mui/material";
 import { Button } from "@mui/material";
+import { Typography } from "@material-ui/core";
 
 function Project({ currentUser }) {
   const [project, setProject] = useState("");
   const [detailRoles, setDetailRoles] = useState([]);
   const [userRole, setUserRole] = useState("");
   const [ticketRows, setTicketRows] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
@@ -35,7 +46,10 @@ function Project({ currentUser }) {
             };
             r = [...r, newRole];
           })
-          .then(() => setDetailRoles(r));
+          .then(() => {
+            setDetailRoles(r);
+            setTimeout(() => setIsLoading(false), 700);
+          });
       });
   }, [project]);
 
@@ -47,7 +61,11 @@ function Project({ currentUser }) {
   useEffect(() => {
     fetch(`/api/projects/${id}`)
       .then((r) => r.json())
-      .then((data) => setProject(data));
+      .then((data) => {
+        setProject(data);
+        console.log(data);
+        setUsers(data.users);
+      });
   }, []);
 
   useEffect(() => {
@@ -56,7 +74,46 @@ function Project({ currentUser }) {
 
   let history = useHistory();
 
-  const columns = [
+  const roleOptions = ["Project Lead", "Developer", "Designer", "QA"];
+
+  const roleColumns = [
+    {
+      field: "action",
+      headerName: "Delete Role",
+      width: 150,
+      sortable: false,
+      renderCell: (params) => {
+        const onClick = (e) => {
+          e.stopPropagation(); // don't select this row after clicking
+
+          const api = params.api;
+          const thisRow = {};
+
+          api
+            .getAllColumns()
+            .filter((c) => c.field === "id" && !!c)
+            .forEach(
+              (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
+            );
+
+          console.log(thisRow.id, null, 4);
+
+          let updatedRoles = detailRoles.filter(
+            (dRole) => dRole.id !== thisRow.id
+          );
+
+          setDetailRoles(updatedRoles);
+          fetch(`/api/roles/${thisRow.id}`, {
+            method: "DELETE",
+            headers: {
+              "content-type": "application/json",
+            },
+          });
+        };
+
+        return <Button onClick={onClick}>Remove</Button>;
+      },
+    },
     { field: "id", headerName: "ID", width: 70 },
     { field: "first_name", headerName: "First name", width: 130 },
     { field: "last_name", headerName: "Last name", width: 130 },
@@ -127,81 +184,194 @@ function Project({ currentUser }) {
 
   return (
     <>
-      <>
-        <div style={{ textAlign: "center" }}>Your Role: {userRole}</div>
-      </>
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: "80%",
-          margin: "auto",
-          // display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Grid style={{ margin: "auto" }} container spacing={8}>
-          <Grid item>
-            <Stack component="form" spacing={2} noValidate autoComplete="off">
-              {project && (
-                <TextField
-                  id="outlined-basic"
-                  label="Project Name"
-                  variant="outlined"
-                  value={project.name}
-                  disabled
-                />
-              )}
-              {project && (
-                <TextField
-                  id="outlined-multiline-flexible"
-                  label="Team Name"
-                  value={project.team}
-                  multiline
-                  rows={1}
-                  disabled
-                />
-              )}
+      {!isLoading ? (
+        <>
+          <>
+            <div style={{ textAlign: "center" }}>
+              <Typography style={{ padding: "20px" }}>
+                <em>
+                  {!isLoading
+                    ? userRole === "Project Lead"
+                      ? "You are a Project Lead. You Can Can Update, Add, and Remove Team Member Roles."
+                      : `Your Role: ${userRole}`
+                    : "No Role Assigned"}
+                </em>
+                {userRole === "ProjectLead" && (
+                  <em>
+                    Project Leads Can Update, Add, and Remove Team Member Roles
+                  </em>
+                )}
+              </Typography>
+            </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button onClick={() => history.push("/create-ticket")}>
+                Add Ticket
+              </Button>
+              {userRole === "Project Lead" && <Button>Delete Project</Button>}
+            </div>
+          </>
+          {users && userRole === "Project Lead" && (
+            <>
+              <Typography style={{ textAlign: "center", padding: "5px" }}>
+                Update & Add Roles
+              </Typography>
+              <Box justifyContent="center" style={{ display: "flex" }}>
+                <FormControl>
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={users}
+                    getOptionLabel={(option) =>
+                      `${option.first_name} ${option.last_name}`
+                    }
+                    style={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Team Member"
+                        variant="outlined"
+                      />
+                    )}
+                    onChange={(event, newValue) => {
+                      setSelectedUser(newValue, null, " ");
+                    }}
+                  />
+                  <FormHelperText>
+                    Be sure to assign yourself a role!
+                  </FormHelperText>
+                </FormControl>
 
-              {project && (
-                <TextField
-                  id="outlined-multiline-flexible"
-                  label="Project Description"
-                  value={project.description}
-                  multiline
-                  rows={4}
-                  disabled
+                <Autocomplete
+                  disablePortal
+                  disableClearable
+                  id="combo-box-demo"
+                  options={roleOptions}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Project Role"
+                      variant="outlined"
+                    />
+                  )}
+                  onChange={(event, newValue) => {
+                    setSelectedRole(newValue);
+                  }}
                 />
-              )}
-            </Stack>
-          </Grid>
-          <Grid
-            textAlign="center"
-            item
-            style={{ width: "65%", margin: "auto" }}
+              </Box>
+            </>
+          )}
+          {selectedRole && selectedUser && (
+            <div style={{ width: "100%", display: "flex" }}>
+              <Button
+                style={{ margin: "auto", padding: "15px" }}
+                onClick={() => {
+                  const updatedRoles = detailRoles.map((obj) => {
+                    console.log(obj);
+                    console.log(selectedUser);
+                    if (obj.email === selectedUser.email) {
+                      return { ...obj, role: selectedRole };
+                    }
+                    return obj;
+                  });
+                  setDetailRoles(updatedRoles);
+                }}
+              >
+                Submit Role
+              </Button>
+            </div>
+          )}
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              width: "80%",
+              margin: "auto",
+
+              height: "100%",
+              // display: "flex",
+              justifyContent: "space-between",
+            }}
           >
-            <DataTable
-              columns={columns}
-              rows={detailRoles}
-              minimum
-              checkboxSelection={false}
-              // width="52%"
-            />
-          </Grid>
-        </Grid>
-      </Box>
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: "80%",
-          margin: "auto",
+            <Grid style={{ margin: "auto" }} container spacing={3}>
+              <Grid item>
+                <Stack
+                  component="form"
+                  spacing={2}
+                  noValidate
+                  autoComplete="off"
+                >
+                  {project && (
+                    <TextField
+                      id="outlined-basic"
+                      label="Project Name"
+                      variant="outlined"
+                      value={project.name}
+                      disabled
+                    />
+                  )}
+                  {project && (
+                    <TextField
+                      id="outlined-multiline-flexible"
+                      label="Team Name"
+                      value={project.team}
+                      multiline
+                      rows={1}
+                      disabled
+                    />
+                  )}
 
-          justifyContent: "space-between",
-        }}
-      >
-        {ticketRows[0] && (
-          <DataTable columns={ticketColumns} rows={ticketRows}></DataTable>
-        )}
-      </Box>
+                  {project && (
+                    <TextField
+                      id="outlined-multiline-flexible"
+                      label="Project Description"
+                      value={project.description}
+                      multiline
+                      rows={4}
+                      disabled
+                    />
+                  )}
+                </Stack>
+              </Grid>
+              <Grid
+                textAlign="center"
+                item
+                style={{ width: "65%", margin: "auto" }}
+              >
+                <DataTable
+                  columns={roleColumns}
+                  rows={detailRoles}
+                  pageSize={4}
+                  // rowsPerPageOptions={[4]}
+                  minimum
+                  checkboxSelection={false}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box
+            sx={{
+              flexGrow: 1,
+              width: "80%",
+              margin: "5vh auto",
+              justifyContent: "space-between",
+            }}
+          >
+            {ticketRows[0] && (
+              <DataTable columns={ticketColumns} rows={ticketRows}></DataTable>
+            )}
+          </Box>
+        </>
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            position: "absolute",
+            top: "20%",
+          }}
+        >
+          <LinearProgress thickness={5} />
+        </Box>
+      )}
     </>
   );
 }

@@ -94,10 +94,12 @@ function Ticket({ currentUser }) {
   ];
   const priorities = ["Low", "Medium", "High"];
 
+  console.log(ticket);
+  console.log(currentUser);
   return (
     <>
       <Typography style={{ textAlign: "center", padding: "20px" }}>
-        {ticket && currentUser.id === ticket.id ? (
+        {ticket && currentUser.id === ticket.submitter_id ? (
           <em>
             You are the submitter of this ticket, you can edit all fields.
           </em>

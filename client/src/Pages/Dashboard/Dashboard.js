@@ -15,7 +15,6 @@ import {
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
 import LinearProgress from "@mui/material/LinearProgress";
-
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -31,7 +30,6 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   const [ticketNames, setTicketNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingTickets, setLoadingTickets] = useState(true);
-  console.log(ticketNames[0]);
 
   useEffect(() => {
     fetch("/api/me").then((r) => {
@@ -61,7 +59,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
 
   useEffect(() => {
     currentUser &&
-      currentUser.tickets_as_submitter.slice(0, 5).map((ticket) => {
+      currentUser?.tickets_as_submitter?.slice(0, 5)?.map((ticket) => {
         fetch(`/api/users/${ticket.assignee_id}`)
           .then((r) => r.json())
           .then((data) => {
@@ -71,7 +69,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
             ]);
           });
       });
-  }, []);
+  }, [currentUser]);
 
   const lowPriorityTickets = tickets.filter(
     (ticket) => ticket.priority === "Low"
@@ -315,7 +313,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
                 Tickets Recently Submitted By You
               </Typography>
               {submittedTickets
-                .slice(0, 5)
+                .slice(-5)
                 .reverse()
                 .map((ticket, index) => {
                   return (
@@ -327,7 +325,6 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
                         <ListItemIcon>
                           <ConfirmationNumberIcon />
                         </ListItemIcon>
-
                         <ListItemText
                           primary={ticket.title}
                           // secondary={`Assignee: ${ticketNames[index]}`}

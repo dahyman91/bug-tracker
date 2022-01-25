@@ -11,7 +11,6 @@ function Comment({ comment }) {
   }, [comment.user_id]);
 
   function getTimeSincePost(postedDate) {
-    console.log(new Date(postedDate).toDateString());
     let now = new Date();
     const millis = Date.parse(now) - Date.parse(postedDate);
     let string;
