@@ -59,7 +59,6 @@ function Ticket({ currentUser }) {
 
   useEffect(() => {
     ticket && getAssigneeName(ticket.assignee_id);
-    // ticket && setIsSubmitterFunc(ticket.submitter_id);
     ticket && getProjectName(ticket.project_id);
   }, [ticket]);
 
@@ -71,14 +70,6 @@ function Ticket({ currentUser }) {
         setSelectedUser(data);
       });
   }
-  // function setIsSubmitterFunc(id) {
-  //   if (id === currentUser.id) {
-  //     setIsSubmitter(true);
-  //   } else {
-  //     setIsSubmitter(false);
-  //   }
-  // }
-  console.log(isSumitter);
 
   function getProjectName(id) {
     fetch(`/api/projects/${id}`)
@@ -372,10 +363,8 @@ function Ticket({ currentUser }) {
                   headers: { "content-type": "application/json" },
                   body: JSON.stringify(fullComment),
                 });
-                setComments([
-                  { fullComment, created_at: new Date() },
-                  ...comments,
-                ]);
+                let stateComment = { ...fullComment, created_at: new Date() };
+                setComments([stateComment, ...comments]);
                 setNewComment("");
               } else {
               }

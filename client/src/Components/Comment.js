@@ -9,23 +9,25 @@ function Comment({ comment }) {
       .then((r) => r.json())
       .then((data) => setName(`${data.first_name} ${data.last_name}`));
   }, [comment.user_id]);
-  console.log(comment);
 
-  function getTimeSincePost(millis) {
+  function getTimeSincePost(postedDate) {
+    console.log(new Date(postedDate).toDateString());
+    let now = new Date();
+    const millis = Date.parse(now) - Date.parse(postedDate);
     let string;
     if (millis < 60000) {
-      string = "Posted Just Now";
-    } else if (60000 < millis < 3600000) {
-      var minutes = Math.floor(millis / 60000);
-      string = `Posted ${minutes} minutes ago`;
+      string = "Just Now";
+    } else if (millis < 3600000) {
+      let minutes = Math.floor(millis / 60000);
+      string = `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    } else if (3600000 < millis < 1000 * 60 * 60 * 24) {
+      let hours = Math.floor(millis / (1000 * 60 * 60));
+      string = `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    } else {
+      string = new Date(postedDate).toDateString();
     }
     return string;
   }
-
-  let curDate = Date.parse(new Date());
-  let postDate = Date.parse(comment.created_at);
-
-  console.log(getTimeSincePost(curDate - postDate));
 
   return (
     <Paper style={{ width: "30%", padding: "40px 20px", margin: "auto" }}>
@@ -34,9 +36,7 @@ function Comment({ comment }) {
           <h4 style={{ margin: 0, textAlign: "left" }}>{name}</h4>
           <p style={{ textAlign: "left" }}>{comment.message}</p>
           <p style={{ textAlign: "left", color: "gray" }}>
-            {getTimeSincePost(
-              Date.parse(new Date()) - Date.parse(comment.created_at)
-            )}
+            {getTimeSincePost(comment.created_at)}
           </p>
         </Grid>
       </Grid>
