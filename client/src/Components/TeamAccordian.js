@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@mui/material";
+import ConfirmationModal from "./ConfirmationModal";
 
 function TeamAccordian({
   team,
@@ -18,6 +19,7 @@ function TeamAccordian({
 }) {
   const [members, setMembers] = useState(team.users);
   const [isAdminArr, setIsAdminArr] = useState({});
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     members.map((member) =>
@@ -145,12 +147,16 @@ function TeamAccordian({
               >
                 Add Project
               </Button>
-              <Button
-                variant="contained"
-                onClick={() => handleDeleteTeam(team.id)}
-              >
+              <Button variant="contained" onClick={() => setOpen(true)}>
                 Delete Team
               </Button>
+              <ConfirmationModal
+                title={"Delete Team"}
+                body={"Are you sure you want to delete this team?"}
+                submitFunction={() => handleDeleteTeam(team.id)}
+                open={open}
+                setOpen={setOpen}
+              />
             </div>
           </List>
         </AccordionDetails>

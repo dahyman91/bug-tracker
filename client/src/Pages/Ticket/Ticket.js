@@ -10,15 +10,8 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { FormHelperText } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Alert } from "@mui/material";
-import {
-  Avatar,
-  Grid,
-  Paper,
-  Box,
-  LinearProgress,
-  Typography,
-} from "@material-ui/core";
+import ConfirmationModal from "../../Components/ConfirmationModal";
+import { Grid, Box, LinearProgress, Typography } from "@material-ui/core";
 import Comment from "../../Components/Comment";
 
 function Ticket({ currentUser }) {
@@ -27,7 +20,6 @@ function Ticket({ currentUser }) {
 
   let history = useHistory();
 
-  const [isSumitter, setIsSubmitter] = useState(true);
   const [ticketName, setTicketName] = useState("");
   const [ticket, setTicket] = useState(null);
   const [selectedProject, setSelectedProject] = useState([]);
@@ -39,7 +31,8 @@ function Ticket({ currentUser }) {
   const [priority, setPriority] = useState("");
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
-  const [loadingTicket, setLoadingTicket] = useState(true);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetch(`/api/tickets/${id}`)
@@ -52,10 +45,8 @@ function Ticket({ currentUser }) {
         setStatus(data.status);
         setPriority(data.priority);
         setComments(data.comments.reverse());
-      })
-      .then(setLoadingTicket(false));
+      });
   }, []);
-  console.log(isSumitter);
 
   useEffect(() => {
     ticket && getAssigneeName(ticket.assignee_id);
@@ -80,6 +71,33 @@ function Ticket({ currentUser }) {
       });
   }
 
+  function deleteTicket(id) {
+    fetch(`/api/teams/${id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+  }
+
+  function getTimeSincePost(postedDate) {
+    let now = new Date();
+    const millis = Date.parse(now) - Date.parse(postedDate);
+    let string;
+    if (millis < 60000) {
+      string = "Just Now";
+    } else if (millis < 3600000) {
+      let minutes = Math.floor(millis / 60000);
+      string = `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    } else if (3600000 < millis < 1000 * 60 * 60 * 24) {
+      let hours = Math.floor(millis / (1000 * 60 * 60));
+      string = `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    } else {
+      string = new Date(postedDate).toDateString();
+    }
+    return string;
+  }
+
   const projects = [];
   currentUser.teams.map((team) =>
     team.projects.map((project) => projects.push(project))
@@ -94,8 +112,6 @@ function Ticket({ currentUser }) {
   ];
   const priorities = ["Low", "Medium", "High"];
 
-  console.log(ticket);
-  console.log(currentUser);
   return (
     <>
       <Typography style={{ textAlign: "center", padding: "20px" }}>
@@ -130,6 +146,9 @@ function Ticket({ currentUser }) {
                 noValidate
                 autoComplete="off"
               >
+                <Typography style={{ textAlign: "center" }}>
+                  Created: {getTimeSincePost(ticket.created_at)}
+                </Typography>
                 {ticket && (
                   <TextField
                     id="outlined-basic"
@@ -140,6 +159,7 @@ function Ticket({ currentUser }) {
                     value={ticketName}
                   />
                 )}
+
                 <FormControl>
                   <InputLabel htmlFor="status-select">Status</InputLabel>
                   <Select
@@ -189,6 +209,9 @@ function Ticket({ currentUser }) {
                 noValidate
                 autoComplete="off"
               >
+                <Typography style={{ textAlign: "center" }}>
+                  Last Updated: {getTimeSincePost(ticket.updated_at)}
+                </Typography>
                 <FormControl fullWidth>
                   <InputLabel id="user-select-label">
                     Change Project (Currently {selectedProject.name})
@@ -320,8 +343,31 @@ function Ticket({ currentUser }) {
           </Box>
         )}
 
-        <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            padding: "20px",
+            display: "flex",
+            justifyContent: "space-around",
+            margin: "auto",
+            width: "50%",
+          }}
+        >
           <Button
+            variant="contained"
+            style={{ color: "white", backgroundColor: "red" }}
+            onClick={() => setOpen(true)}
+          >
+            Delete Ticket
+          </Button>
+          <ConfirmationModal
+            title={"Delete Team"}
+            body={"Are you sure you want to delete this team?"}
+            submitFunction={() => deleteTicket(ticket.id)}
+            open={open}
+            setOpen={setOpen}
+          />
+          <Button
+            variant="contained"
             onClick={() =>
               fetch(`/api/tickets/${ticket.id}`, {
                 method: "PATCH",
@@ -341,7 +387,7 @@ function Ticket({ currentUser }) {
             Update Ticket
           </Button>
         </div>
-        <Divider></Divider>
+        <Divider style={{ margin: "auto" }} width="80%"></Divider>
       </>
       <h3 style={{ textAlign: "center", padding: "20px" }}>Comments</h3>
       <div style={{ width: "100%", display: "flex" }}>
@@ -352,7 +398,9 @@ function Ticket({ currentUser }) {
             onChange={(e) => setNewComment(e.target.value)}
           />
           <Button
+            variant="contained"
             type="submit"
+            style={{ width: "40%", margin: "20px auto" }}
             onClick={() => {
               if (newComment.length) {
                 let fullComment = {
@@ -368,7 +416,6 @@ function Ticket({ currentUser }) {
                 let stateComment = { ...fullComment, created_at: new Date() };
                 setComments([stateComment, ...comments]);
                 setNewComment("");
-              } else {
               }
             }}
           >
@@ -377,12 +424,9 @@ function Ticket({ currentUser }) {
         </FormControl>
       </div>
       <div style={{ padding: 14, textAlign: "center" }}>
-        {comments
-          .reverse()
-          // .sort((a, b) => a.created_at - b.created_at)
-          .map((comment) => (
-            <Comment comment={comment} />
-          ))}
+        {comments.reverse().map((comment) => (
+          <Comment comment={comment} />
+        ))}
       </div>
     </>
   );

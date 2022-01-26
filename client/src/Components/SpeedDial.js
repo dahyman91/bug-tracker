@@ -16,19 +16,19 @@ export default function SideNav({ currentUser, setCurrentUser }) {
           setActions([
             {
               icon: <ConfirmationNumberIcon />,
-              name: "Create Ticket",
+              name: "Add New Ticket",
               route: "/create-ticket",
               isDisabled: user.projects[0] ? false : true,
             },
             {
               icon: <AccountTreeIcon />,
-              name: "Create Project",
+              name: "Add New Project",
               route: "/create-project",
               isDisabled: user.teams[0] ? false : true,
             },
             {
               icon: <GroupWorkIcon />,
-              name: "Create Team",
+              name: "Add New Team",
               route: "/create-team",
             },
           ]);

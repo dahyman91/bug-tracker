@@ -25,7 +25,6 @@ export default function ConfirmationModal({
 
   const handleClose = () => {
     setOpen(false);
-    submitFunction();
   };
 
   return (
@@ -41,11 +40,19 @@ export default function ConfirmationModal({
           <DialogContentText>{body}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Disagree
+          <Button variant="contained" autoFocus onClick={handleClose}>
+            Back
           </Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
+          <Button
+            style={{ color: "black", backgroundColor: "red" }}
+            variant="contained"
+            onClick={() => {
+              handleClose();
+              submitFunction();
+            }}
+            autoFocus
+          >
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

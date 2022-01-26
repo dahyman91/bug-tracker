@@ -3,6 +3,7 @@ import TeamAccordian from "../../Components/TeamAccordian";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import ConfirmationModal from "../../Components/ConfirmationModal";
 
 export default function Teams({ setCurrentUser, currentUser }) {
   const [teams, setTeams] = useState([]);

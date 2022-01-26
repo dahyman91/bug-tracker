@@ -167,9 +167,14 @@ function CreateProject({ currentUser, setCurrentUser }) {
           </Box>
         )}
         {selectedRole && selectedUser && (
-          <div style={{ width: "100%", display: "flex" }}>
+          <div style={{ width: "100%", display: "flex", padding: "10px" }}>
             <Button
-              style={{ margin: "auto", padding: "15px" }}
+              variant="contained"
+              style={{
+                margin: "auto",
+                padding: "10px",
+                width: "20%",
+              }}
               onClick={() => {
                 const updatedRoles = roles.map((obj) => {
                   if (obj.id === selectedUser.id) {
@@ -184,12 +189,15 @@ function CreateProject({ currentUser, setCurrentUser }) {
             </Button>
           </div>
         )}
-        <DataTable
-          columns={columns}
-          rows={roleAssignments}
-          checkboxSelection={false}
-          width="60%"
-        />
+
+        {roles.filter((role) => role.role !== "Not Assigned")[0] && (
+          <DataTable
+            columns={columns}
+            rows={roleAssignments}
+            checkboxSelection={false}
+            width="60%"
+          />
+        )}
       </>
     );
   }
