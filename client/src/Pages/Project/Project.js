@@ -116,16 +116,15 @@ function Project({ currentUser }) {
         return <Button onClick={onClick}>Remove</Button>;
       },
     },
-    { field: "id", headerName: "ID", width: 70 },
     { field: "first_name", headerName: "First name", width: 130 },
     { field: "last_name", headerName: "Last name", width: 130 },
-    { field: "email", headerName: "Email", width: 190 },
     {
       field: "role",
       headerName: "Role",
       type: "string",
       width: 130,
     },
+    { field: "email", headerName: "Email", width: 190 },
   ];
 
   const ticketColumns = [
@@ -167,7 +166,7 @@ function Project({ currentUser }) {
   function setTicketData() {
     let ticketsData = [];
     project &&
-      project.tickets.map((ticket) => {
+      project.tickets.forEach((ticket) => {
         let ticketData = {
           assignee: getNameById(ticket.assignee_id),
           submitter: getNameById(ticket.submitter_id),
@@ -206,11 +205,24 @@ function Project({ currentUser }) {
               </Typography>
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <Button onClick={() => history.push("/create-ticket")}>
+              <Button
+                variant="contained"
+                onClick={() => history.push("/create-ticket")}
+              >
                 Add Ticket
               </Button>
               {userRole === "Project Lead" && (
-                <Button onClick={() => setOpen(true)}>Delete Project</Button>
+                <Button
+                  variant="contained"
+                  style={{
+                    marginLeft: "10px",
+                    color: "#C95036",
+                    backgroundColor: "white",
+                  }}
+                  onClick={() => setOpen(true)}
+                >
+                  Delete Project
+                </Button>
               )}
               <ConfirmationModal
                 open={open}

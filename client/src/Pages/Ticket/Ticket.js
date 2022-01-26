@@ -354,7 +354,7 @@ function Ticket({ currentUser }) {
         >
           <Button
             variant="contained"
-            style={{ color: "white", backgroundColor: "red" }}
+            style={{ color: "#C95036", backgroundColor: "white" }}
             onClick={() => setOpen(true)}
           >
             Delete Ticket

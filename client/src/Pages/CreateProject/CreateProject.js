@@ -217,6 +217,9 @@ function CreateProject({ currentUser, setCurrentUser }) {
               </Box>
             ) : (
               <Box sx={{ flexGrow: 1, width: "100%" }}>
+                <Typography style={{ textAlign: "center" }}>
+                  Review & Submit Project
+                </Typography>
                 <Grid style={{ margin: "0 auto" }} container spacing={8}>
                   <Grid textAlign="center" item>
                     <Stack

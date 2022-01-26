@@ -51,13 +51,15 @@ function TeamAccordian({
 
   return (
     <div>
-      <Accordion>
+      <Accordion style={{ marginBottom: "10px" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Team Name: {team.name}</Typography>
+          <Typography style={{ margin: "auto" }}>
+            Team Name: <b>{team.name}</b>
+          </Typography>
         </AccordionSummary>
         {adminTeams.includes(team.id) && (
           <Typography style={{}}>
@@ -67,7 +69,15 @@ function TeamAccordian({
         <AccordionDetails style={{}}>
           <Typography>Team Description: {team.description}</Typography>
           <List dense={false}>
-            <ListSubheader>Members</ListSubheader>
+            <ListSubheader
+              style={{
+                float: "left",
+                color: "black",
+                textDecoration: "underline",
+              }}
+            >
+              Members
+            </ListSubheader>
             {members.map((user, index) => {
               return (
                 <div>
@@ -75,17 +85,26 @@ function TeamAccordian({
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Typography style={{ fontSize: "14px" }}>
-                      {isAdminArr[user.id] && "Admin: "}
-                      {user.first_name} {user.last_name}
-                      (email {user.email})
+                      {" "}
+                      <b>
+                        {user.first_name} {user.last_name}
+                      </b>{" "}
+                      (email: {user.email})
+                      <span>
+                        <b>
+                          <em>{isAdminArr[user.id] && " Admin"}</em>
+                        </b>
+                      </span>
                     </Typography>
                     {adminTeams.includes(team.id) && (
                       <div>
-                        <Button onClick={() => handleRemoveMember(user.id)}>
-                          remove member
-                        </Button>
                         {isAdminArr[user.id] ? (
                           <Button
+                            style={{
+                              backgroundColor: "white",
+                              color: "#C95036",
+                            }}
+                            variant="contained"
                             onClick={() => {
                               setIsAdminArr((isAdminArr) => ({
                                 ...isAdminArr,
@@ -98,6 +117,7 @@ function TeamAccordian({
                           </Button>
                         ) : (
                           <Button
+                            variant="contained"
                             onClick={() => {
                               setIsAdminArr((isAdminArr) => ({
                                 ...isAdminArr,
@@ -109,6 +129,17 @@ function TeamAccordian({
                             make admin
                           </Button>
                         )}
+                        <Button
+                          style={{
+                            marginLeft: "10px",
+                            backgroundColor: "white",
+                            color: "#C95036",
+                          }}
+                          variant="contained"
+                          onClick={() => handleRemoveMember(user.id)}
+                        >
+                          remove member
+                        </Button>
                       </div>
                     )}
                   </ListItem>
@@ -120,6 +151,7 @@ function TeamAccordian({
               return (
                 <ListItem style={{ textAlign: "center" }}>
                   <Button
+                    variant="contained"
                     onClick={() => history.push(`/project/${project.id}`)}
                     style={{ margin: "auto" }}
                   >
@@ -132,24 +164,42 @@ function TeamAccordian({
               style={{
                 display: "flex",
                 width: "100%",
-                justifyContent: "space-evenly",
+                paddingRight: "16px",
+                marginTop: "10px",
+                justifyContent: "right",
               }}
             >
               <Button
-                variant="contained"
-                onClick={() => handleRemoveTeam(team.id)}
-              >
-                Leave Team
-              </Button>
-              <Button
+                style={{ marginRight: "10px" }}
                 variant="contained"
                 onClick={() => history.push("/create-project")}
               >
                 Add Project
               </Button>
-              <Button variant="contained" onClick={() => setOpen(true)}>
-                Delete Team
+              <Button
+                style={{
+                  marginRight: "10px",
+                  color: "#C95036",
+                  backgroundColor: "white",
+                }}
+                variant="contained"
+                onClick={() => handleRemoveTeam(team.id)}
+              >
+                Leave Team
               </Button>
+              {adminTeams.includes(team.id) && (
+                <Button
+                  style={{
+                    backgroundColor: "white",
+                    color: "#C95036",
+                    width: "20%",
+                  }}
+                  variant="contained"
+                  onClick={() => setOpen(true)}
+                >
+                  Delete Team
+                </Button>
+              )}
               <ConfirmationModal
                 title={"Delete Team"}
                 body={"Are you sure you want to delete this team?"}

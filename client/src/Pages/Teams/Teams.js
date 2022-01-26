@@ -47,8 +47,12 @@ export default function Teams({ setCurrentUser, currentUser }) {
   return (
     <>
       <div style={{ width: "60%", margin: "auto", textAlign: "center" }}>
-        <Typography>My Teams</Typography>
-        <Button onClick={() => history.push("/create-team")} style={{}}>
+        <Typography style={{ fontSize: "1.1rem" }}>My Teams</Typography>
+        <Button
+          variant="contained"
+          onClick={() => history.push("/create-team")}
+          style={{ margin: "5px auto 10px" }}
+        >
           Add New Team
         </Button>
         {teams &&

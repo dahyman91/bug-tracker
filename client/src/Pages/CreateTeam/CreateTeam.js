@@ -102,9 +102,10 @@ function CreateTeam({ currentUser, setCurrentUser }) {
   function secondStep() {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <Typography style={{ textAlign: "center" }}>
-          Add Users To Your Team
+        <Typography style={{ textAlign: "center", marginBottom: "15px" }}>
+          Select Members for {teamName}
         </Typography>
+
         <Grid
           style={{ width: "90%", margin: "0 auto" }}
           container
@@ -143,7 +144,9 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                     </option>
                   ))}
               </Select>
-              <FormHelperText>
+              <FormHelperText
+                style={{ fontSize: ".9rem", color: "black", marginTop: "15px" }}
+              >
                 Click To Add Team Members. Be Sure to include yourself!
               </FormHelperText>
             </FormControl>
@@ -180,7 +183,9 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                   </option>
                 ))}
               </Select>
-              <FormHelperText>
+              <FormHelperText
+                style={{ fontSize: ".9rem", color: "black", marginTop: "15px" }}
+              >
                 Click To Remove Team Members. Team Members:{" "}
                 {selectedUsers.length}
               </FormHelperText>
@@ -231,7 +236,7 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                 Selected Users
               </InputLabel>
               <Select
-                sx={{ width: "25ch" }}
+                sx={{ width: "30ch" }}
                 multiple
                 native
                 label="Selected Users"
@@ -241,7 +246,7 @@ function CreateTeam({ currentUser, setCurrentUser }) {
               >
                 {selectedUsers.map((user) => (
                   <option key={user.id} value={user.id}>
-                    {user.first_name}
+                    {user.first_name} {user.last_name}
                   </option>
                 ))}
               </Select>

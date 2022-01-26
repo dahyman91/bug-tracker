@@ -47,36 +47,38 @@ export default function BasicModal({ open, setOpen, currentUser }) {
               <h3 style={{ textAlign: "center" }}>
                 Welcome to your new bug tracker tool!
               </h3>
+              <div style={{ textAlign: "center" }}>
+                <p>
+                  <em>
+                    This message will appear until you have been assigned to
+                    your first ticket.
+                  </em>
+                </p>
+              </div>
               <br />
-              <br />
-              Use this app to keep track of bugs or even plan and update your
+              Use this app to keep track of bugs, or plan and update your
               progress on entire projects.
               <br />
               <br />
-              To get started,
-              <b>
-                {" "}
-                first create a team and add any other user who has signed up.{" "}
-              </b>
-              Later you can specify adminitrators and remove users on the Team
-              page.
+              <b> First, "add new team". </b>
+              Later you will be able to specify administrators and remove users
+              on the Team page.
               <br />
               <br />
               <b>
-                Second, create a project and assign your team members roles.
-              </b>
+                Second, "add new project" and assign roles to team members.
+              </b>{" "}
               If you designate yourself as the 'Project Lead,' you will be able
-              to update roles on the Project's page.
+              to update the project.
               <br />
               <br />
-              <b>Third, create tickets and assign them to specific users.</b> If
-              you are the assignee of the ticket, you will be able to update
-              that ticket's status. If you are the submitter, you will be able
-              to update all of the ticket's details
+              <b>
+                Third, "add new ticket" and assign it to a specific user.
+              </b>{" "}
+              As the submitter, you will be able to update all of the ticket's
+              details.
               <br />
               <br />
-              *You will continue to be greeted by this message until you are
-              assigned a ticket*
             </Typography>
 
             <Box
@@ -91,7 +93,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                   <ListItem onClick={() => history.push("/create-team")}>
                     <ListItemButton>
                       <ListItemIcon>
-                        <CheckCircleOutlineIcon />
+                        <CheckCircleOutlineIcon style={{ color: "black" }} />
                       </ListItemIcon>
                       <ListItemText primary="1: You are on a team!" />
                     </ListItemButton>
