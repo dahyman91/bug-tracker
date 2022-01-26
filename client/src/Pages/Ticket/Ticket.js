@@ -85,7 +85,7 @@ function Ticket({ currentUser }) {
     const millis = Date.parse(now) - Date.parse(postedDate);
     let string;
     if (millis < 60000) {
-      string = "Just Now";
+      string = "just now";
     } else if (millis < 3600000) {
       let minutes = Math.floor(millis / 60000);
       string = `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
@@ -128,6 +128,16 @@ function Ticket({ currentUser }) {
       </Typography>
 
       <>
+        {ticket && (
+          <Typography style={{ textAlign: "center" }}>
+            <b>Created {getTimeSincePost(ticket.created_at)}</b>
+          </Typography>
+        )}
+        {ticket && (
+          <Typography style={{ textAlign: "center", marginBottom: "30px" }}>
+            <b>Last updated {getTimeSincePost(ticket.updated_at)}</b>
+          </Typography>
+        )}
         {ticket ? (
           <Grid
             container
@@ -146,9 +156,6 @@ function Ticket({ currentUser }) {
                 noValidate
                 autoComplete="off"
               >
-                <Typography style={{ textAlign: "center" }}>
-                  Created: {getTimeSincePost(ticket.created_at)}
-                </Typography>
                 {ticket && (
                   <TextField
                     id="outlined-basic"
@@ -209,9 +216,6 @@ function Ticket({ currentUser }) {
                 noValidate
                 autoComplete="off"
               >
-                <Typography style={{ textAlign: "center" }}>
-                  Last Updated: {getTimeSincePost(ticket.updated_at)}
-                </Typography>
                 <FormControl fullWidth>
                   <InputLabel id="user-select-label">
                     Change Project (Currently {selectedProject.name})
@@ -346,19 +350,12 @@ function Ticket({ currentUser }) {
         <div
           style={{
             padding: "20px",
-            display: "flex",
-            justifyContent: "space-around",
-            margin: "auto",
-            width: "50%",
+            // display: "flex",
+            // justifyContent: "space-around",
+            textAlign: "center",
+            width: "100%",
           }}
         >
-          <Button
-            variant="contained"
-            style={{ color: "#C95036", backgroundColor: "white" }}
-            onClick={() => setOpen(true)}
-          >
-            Delete Ticket
-          </Button>
           <ConfirmationModal
             title={"Delete Team"}
             body={"Are you sure you want to delete this team?"}
@@ -385,6 +382,18 @@ function Ticket({ currentUser }) {
             }
           >
             Update Ticket
+          </Button>
+          <br></br>
+          <Button
+            variant="contained"
+            style={{
+              color: "#C95036",
+              backgroundColor: "white",
+              marginTop: "10px",
+            }}
+            onClick={() => setOpen(true)}
+          >
+            Delete Ticket
           </Button>
         </div>
         <Divider style={{ margin: "auto" }} width="80%"></Divider>

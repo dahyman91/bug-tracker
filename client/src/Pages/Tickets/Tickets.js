@@ -202,16 +202,30 @@ function Tickets({ currentUser, setCurrentUser }) {
       <Button onClick={() => history.push("/create-ticket")} style={{}}>
         Add New Ticket
       </Button>
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          {openTickets && <Tab label="My Open Tickets" {...a11yProps(0)} />}
-          {closedTickets && <Tab label="My Closed Tickets" {...a11yProps(1)} />}
+          {openTickets && (
+            <Tab
+              label={`My Open Tickets (${openTickets?.length})`}
+              {...a11yProps(0)}
+            />
+          )}
+          {closedTickets && (
+            <Tab
+              label={`My Closed Tickets (${closedTickets?.length})`}
+              {...a11yProps(1)}
+            />
+          )}
           {submittedTickets && (
-            <Tab label="Submitted Tickets" {...a11yProps(2)} />
+            <Tab
+              label={`Submitted Tickets (${submittedTickets?.length})`}
+              {...a11yProps(2)}
+            />
           )}
         </Tabs>
       </Box>

@@ -60,7 +60,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
               progress on entire projects.
               <br />
               <br />
-              <b> First, "add new team". </b>
+              <b> First, "add new team." </b>
               Later you will be able to specify administrators and remove users
               on the Team page.
               <br />
@@ -68,8 +68,8 @@ export default function BasicModal({ open, setOpen, currentUser }) {
               <b>
                 Second, "add new project" and assign roles to team members.
               </b>{" "}
-              If you designate yourself as the 'Project Lead,' you will be able
-              to update the project.
+              If you designate yourself as the Project Lead, you will be able to
+              update the project.
               <br />
               <br />
               <b>
@@ -84,8 +84,9 @@ export default function BasicModal({ open, setOpen, currentUser }) {
             <Box
               sx={{
                 margin: "auto",
-                maxWidth: 560,
+                maxWidth: 300,
                 bgcolor: "background.paper",
+                // color: "blue",
               }}
             >
               <List>
@@ -93,7 +94,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                   <ListItem onClick={() => history.push("/create-team")}>
                     <ListItemButton>
                       <ListItemIcon>
-                        <CheckCircleOutlineIcon style={{ color: "black" }} />
+                        <CheckCircleOutlineIcon style={{ color: "blue" }} />
                       </ListItemIcon>
                       <ListItemText primary="1: You are on a team!" />
                     </ListItemButton>
