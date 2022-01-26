@@ -16,7 +16,7 @@ function Copyright() {
   return (
     <Typography variant="body2" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://www.linkedin.com/in/dan-hyman-dev/">
+      <Link color="#2F7B32" href="https://www.linkedin.com/in/dan-hyman-dev/">
         Dan Hyman
       </Link>{" "}
       {new Date().getFullYear()}

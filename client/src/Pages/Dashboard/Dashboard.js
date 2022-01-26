@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import BasicModal from "../../Components/Modal";
 import { useHistory } from "react-router-dom";
 import "./Dashboard.css";
-
 import {
   Chart as ChartJS,
   ArcElement,
@@ -19,17 +18,15 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import BugReportIcon from "@mui/icons-material/BugReport";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
-import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
 function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   const [tickets, setTickets] = useState([]);
   const [submittedTickets, setSubmittedTickets] = useState([]);
-  const [ticketNames, setTicketNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingTickets, setLoadingTickets] = useState(true);
 
   useEffect(() => {
     fetch("/api/me").then((r) => {
@@ -56,20 +53,6 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
   );
 
   let history = useHistory();
-
-  useEffect(() => {
-    currentUser &&
-      currentUser?.tickets_as_submitter?.slice(0, 5)?.map((ticket) => {
-        fetch(`/api/users/${ticket.assignee_id}`)
-          .then((r) => r.json())
-          .then((data) => {
-            setTicketNames([
-              ...ticketNames,
-              `${data.first_name} ${data.last_name}`,
-            ]);
-          });
-      });
-  }, [currentUser]);
 
   const lowPriorityTickets = tickets.filter(
     (ticket) => ticket.priority === "Low"
@@ -293,9 +276,12 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
                     >
                       <ListItemButton>
                         <ListItemIcon>
-                          <ConfirmationNumberIcon />
+                          <BugReportIcon />
                         </ListItemIcon>
-                        <ListItemText primary={ticket.title} />
+                        <ListItemText
+                          primary={ticket.title}
+                          secondary={`Submitter: ${ticket.submitter_name}`}
+                        />
                       </ListItemButton>
                     </ListItem>
                   );
@@ -305,9 +291,12 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
         </div>
         <div>
           <Box
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+            sx={{
+              width: "100%",
+              maxWidth: 360,
+              bgcolor: "background.paper",
+            }}
           >
-            {/* {!loadingTickets && ( */}
             <List dense>
               <Typography textAlign={"center"}>
                 Tickets Recently Submitted By You
@@ -315,7 +304,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
               {submittedTickets
                 .slice(-5)
                 .reverse()
-                .map((ticket, index) => {
+                .map((ticket) => {
                   return (
                     <ListItem
                       onClick={() => history.push(`/ticket/${ticket.id}`)}
@@ -323,11 +312,11 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
                     >
                       <ListItemButton>
                         <ListItemIcon>
-                          <ConfirmationNumberIcon />
+                          <BugReportIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary={ticket.title}
-                          // secondary={`Assignee: ${ticketNames[index]}`}
+                          secondary={`Assignee: ${ticket.assignee_name}`}
                         />
                       </ListItemButton>
                     </ListItem>

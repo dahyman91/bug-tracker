@@ -17,7 +17,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 1000,
-  height: 600,
+  height: 650,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -45,21 +45,38 @@ export default function BasicModal({ open, setOpen, currentUser }) {
           <Box sx={style}>
             <Typography>
               <h3 style={{ textAlign: "center" }}>
-                Welcome to your new project management tool!
+                Welcome to your new bug tracker tool!
               </h3>
               <br />
               <br />
-              In this app, you can create teams with any other user who has
-              signed up. Next you can create projects and connect team members
-              by assigning them roles. Finally, you can create tickets to keep
-              track of your progress on a project. You can assign yourself a
-              ticket, or any other team member who is assigned to that ticket's
-              project. You will populate your dashboard once you are on a team,
-              included in a project and are included on a ticket. You will
-              continue to see this modal on your dashboard, until you have
-              completed the three steps below.
+              Use this app to keep track of bugs or even plan and update your
+              progress on entire projects.
               <br />
               <br />
+              To get started,
+              <b>
+                {" "}
+                first create a team and add any other user who has signed up.{" "}
+              </b>
+              Later you can specify adminitrators and remove users on the Team
+              page.
+              <br />
+              <br />
+              <b>
+                Second, create a project and assign your team members roles.
+              </b>
+              If you designate yourself as the 'Project Lead,' you will be able
+              to update roles on the Project's page.
+              <br />
+              <br />
+              <b>Third, create tickets and assign them to specific users.</b> If
+              you are the assignee of the ticket, you will be able to update
+              that ticket's status. If you are the submitter, you will be able
+              to update all of the ticket's details
+              <br />
+              <br />
+              *You will continue to be greeted by this message until you are
+              assigned a ticket*
             </Typography>
 
             <Box
@@ -76,7 +93,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <CheckCircleOutlineIcon />
                       </ListItemIcon>
-                      <ListItemText primary="You are on a team!" />
+                      <ListItemText primary="1: You are on a team!" />
                     </ListItemButton>
                   </ListItem>
                 ) : (
@@ -85,7 +102,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <RadioButtonUncheckedIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Create a team" />
+                      <ListItemText primary="1: Add New Team" />
                     </ListItemButton>
                   </ListItem>
                 )}
@@ -95,7 +112,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <CheckCircleOutlineIcon />
                       </ListItemIcon>
-                      <ListItemText primary="You have been assigned a role in a project!" />
+                      <ListItemText primary="2: You have been assigned a role in a project!" />
                     </ListItemButton>
                   </ListItem>
                 ) : (
@@ -104,7 +121,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <RadioButtonUncheckedIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Create a project (and assign yourself a role)" />
+                      <ListItemText primary="2: Add New Project" />
                     </ListItemButton>
                   </ListItem>
                 )}
@@ -114,7 +131,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <CheckCircleOutlineIcon />
                       </ListItemIcon>
-                      <ListItemText primary="You have work to do!" />
+                      <ListItemText primary="3: You have work to do!" />
                     </ListItemButton>
                   </ListItem>
                 ) : (
@@ -123,7 +140,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                       <ListItemIcon>
                         <RadioButtonUncheckedIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Assign yourself (or get assigned) a ticket" />
+                      <ListItemText primary="3: Add New Ticket" />
                     </ListItemButton>
                   </ListItem>
                 )}

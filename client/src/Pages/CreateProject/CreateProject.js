@@ -197,60 +197,69 @@ function CreateProject({ currentUser, setCurrentUser }) {
   function thirdStep() {
     return (
       <>
-        {roles.filter((role) => role.email === currentUser.email)[0].role ===
-        "Not Assigned" ? (
-          <Box sx={{ flexGrow: 1, width: "100%" }}>
-            <Typography style={{ textAlign: "center" }}>
-              You have not assigned yourself a role. Please go back and assign
-              yourself a role for this project.
-            </Typography>
-          </Box>
-        ) : (
-          <Box sx={{ flexGrow: 1, width: "100%" }}>
-            <Grid style={{ margin: "0 auto" }} container spacing={8}>
-              <Grid textAlign="center" item>
-                <Stack
-                  component="form"
-                  spacing={2}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField
-                    id="outlined-basic"
-                    label="Project Name"
-                    variant="outlined"
-                    value={projectName}
-                    disabled
-                  />
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Team Name"
-                    value={team.name}
-                    multiline
-                    rows={1}
-                    disabled
-                  />
+        {roles[0] ? (
+          <>
+            {roles.filter((role) => role.email === currentUser.email)[0]
+              .role === "Not Assigned" ? (
+              <Box sx={{ flexGrow: 1, width: "100%" }}>
+                <Typography style={{ textAlign: "center" }}>
+                  You have not assigned yourself a role. Please go back and
+                  assign yourself a role for this project.
+                </Typography>
+              </Box>
+            ) : (
+              <Box sx={{ flexGrow: 1, width: "100%" }}>
+                <Grid style={{ margin: "0 auto" }} container spacing={8}>
+                  <Grid textAlign="center" item>
+                    <Stack
+                      component="form"
+                      spacing={2}
+                      noValidate
+                      autoComplete="off"
+                    >
+                      <TextField
+                        id="outlined-basic"
+                        label="Project Name"
+                        variant="outlined"
+                        value={projectName}
+                        disabled
+                      />
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        label="Team Name"
+                        value={team.name}
+                        multiline
+                        rows={1}
+                        disabled
+                      />
 
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Project Description"
-                    value={projectDescription}
-                    multiline
-                    rows={4}
-                    disabled
-                  />
-                </Stack>
-              </Grid>
-              <Grid textAlign="center" item style={{ width: "55%" }}>
-                <DataTable
-                  columns={columns}
-                  rows={roleAssignments}
-                  checkboxSelection={false}
-                  // width="52%"
-                />
-              </Grid>
-            </Grid>
-          </Box>
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        label="Project Description"
+                        value={projectDescription}
+                        multiline
+                        rows={4}
+                        disabled
+                      />
+                    </Stack>
+                  </Grid>
+                  <Grid textAlign="center" item style={{ width: "55%" }}>
+                    <DataTable
+                      columns={columns}
+                      rows={roleAssignments}
+                      checkboxSelection={false}
+                      // width="52%"
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </>
+        ) : (
+          <Typography style={{ textAlign: "center" }}>
+            You have not asssigned any roles! Please return to the previous
+            page.
+          </Typography>
         )}
       </>
     );

@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Button } from "@mui/material";
 import { Typography } from "@material-ui/core";
+import ConfirmationModal from "../../Components/ConfirmationModal";
 
 function Project({ currentUser }) {
   const [project, setProject] = useState("");
@@ -25,6 +26,7 @@ function Project({ currentUser }) {
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -207,7 +209,20 @@ function Project({ currentUser }) {
               <Button onClick={() => history.push("/create-ticket")}>
                 Add Ticket
               </Button>
-              {userRole === "Project Lead" && <Button>Delete Project</Button>}
+              {userRole === "Project Lead" && (
+                <Button onClick={() => setOpen(true)}>Delete Project</Button>
+              )}
+              <ConfirmationModal
+                open={open}
+                setOpen={setOpen}
+                body={"Are you sure you want to delete this project?"}
+                submitFunction={() =>
+                  fetch(`/api/projects/${project.id}`, {
+                    method: "DELETE",
+                    headers: { "content-type": "application/json" },
+                  }).then(() => history.push("/projects"))
+                }
+              />
             </div>
           </>
           {users && userRole === "Project Lead" && (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Avatar, Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 
 function Comment({ comment }) {
   const [name, setName] = useState("");

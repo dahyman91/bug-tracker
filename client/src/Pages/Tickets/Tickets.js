@@ -25,7 +25,7 @@ function Tickets({ currentUser, setCurrentUser }) {
   }
 
   function getProjectNameById(id) {
-    let project = projects.filter((project) => project.id == id);
+    let project = projects.filter((project) => project.id === id);
     return project[0]?.name ?? "No Role Assigned";
   }
 

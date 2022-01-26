@@ -7,7 +7,6 @@ import { useHistory } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LandingImg from "../Components/LandingImg";
 import Alert from "@mui/material/Alert";
 import { Stack } from "@mui/material";
@@ -16,9 +15,9 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://www.linkedin.com/in/dan-hyman-dev/">
+      <Link color="#2F7B32" href="https://www.linkedin.com/in/dan-hyman-dev/">
         Dan Hyman
-      </Link>{" "}
+      </Link>
       {new Date().getFullYear()}
     </Typography>
   );
