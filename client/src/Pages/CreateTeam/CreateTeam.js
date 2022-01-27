@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 
 import Select from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
-import { FormHelperText, Typography } from "@mui/material";
+import { FormHelperText, Typography, Paper } from "@mui/material";
 
 function CreateTeam({ currentUser, setCurrentUser }) {
   const [teamName, setTeamName] = useState("");
