@@ -11,13 +11,25 @@ import LandingImg from "../Components/LandingImg";
 import Alert from "@mui/material/Alert";
 import { Stack } from "@mui/material";
 
+import "./Signup.css";
+
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center">
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      style={{
+        position: "absolute",
+        bottom: "0px",
+        left: "50%",
+        transform: "translateX(-50%)",
+      }}
+      align="center"
+    >
       {"Copyright © "}
-      <Link color="#2F7B32" href="https://www.linkedin.com/in/dan-hyman-dev/">
+      <Link color="#2F7B32" href="https://www.dan-hyman.com/">
         Dan Hyman
-      </Link>
+      </Link>{" "}
       {new Date().getFullYear()}
     </Typography>
   );
@@ -80,106 +92,97 @@ export default function SignUp({ setCurrentUser, currentUser }) {
           </Stack>
         </div>
       )}
-      <Grid
-        style={{ marginTop: "10%", width: "80%", margin: "5% auto 0%" }}
-        container
-        spacing={2}
-      >
-        <Grid item xs={6}>
-          <LandingImg width={"85%"} height={"500px"} />
-        </Grid>
-        <Grid item xs={6}>
+      <div className="signup-container" container spacing={2}>
+        <LandingImg width={"100%"} />
+
+        <Box
+          sx={{
+            margin: "auto",
+            width: "70%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
           <Box
-            sx={{
-              marginTop: 10,
-              marginLeft: "auto",
-              marginRight: "auto",
-              width: "80%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            <Typography component="h1" variant="h5">
-              Sign Up
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={first_name}
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={last_name}
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
             >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    onChange={(e) => setFirstName(e.target.value)}
-                    value={first_name}
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    onChange={(e) => setLastName(e.target.value)}
-                    value={last_name}
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
-                </Grid>
+              Sign Up
+            </Button>
+            <Grid container justifyContent="center">
+              <Grid item>
+                <Link href="/log-in" variant="body2">
+                  Already have an account? Sign in
+                </Link>
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign Up
-              </Button>
-              <Grid container justifyContent="center">
-                <Grid item>
-                  <Link href="/log-in" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
+            </Grid>
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </div>
       <CssBaseline />
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </>
