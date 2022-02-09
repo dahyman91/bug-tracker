@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import { useHistory } from "react-router-dom";
@@ -183,7 +182,7 @@ export default function SignUp({ setCurrentUser, currentUser }) {
           </Box>
         </Box>
       </div>
-      <CssBaseline />
+
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </>
   );

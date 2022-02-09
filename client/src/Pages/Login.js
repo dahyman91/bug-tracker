@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import LandingImg from "../Components/LandingImg";
 import { FormControl } from "@mui/material";
 import { Stack, Alert } from "@mui/material";
-import { CssBaseline } from "@material-ui/core";
 
 import "./Login.css";
 

@@ -194,17 +194,6 @@ function TeamAccordian({
               >
                 Add Project
               </Button>
-              {/* <Button
-                style={{
-                  marginRight: "10px",
-                  color: "#C95036",
-                  backgroundColor: "white",
-                }}
-                variant="contained"
-                onClick={() => handleRemoveTeam(team.id)}
-              >
-                Leave Team
-              </Button> */}
               {adminTeams.includes(team.id) && (
                 <Button
                   style={{
