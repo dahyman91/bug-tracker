@@ -54,7 +54,7 @@ function Projects({ currentUser, setCurrentUser }) {
   );
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", height: "100vh" }}>
       <Typography>My Projects</Typography>
       <Button onClick={() => history.push("/create-project")} style={{}}>
         Add New Project

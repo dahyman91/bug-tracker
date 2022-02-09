@@ -46,7 +46,14 @@ export default function Teams({ setCurrentUser, currentUser }) {
 
   return (
     <>
-      <div style={{ width: "60%", margin: "auto", textAlign: "center" }}>
+      <div
+        style={{
+          width: "60%",
+          margin: "auto",
+          textAlign: "center",
+          height: "100vh",
+        }}
+      >
         <Typography style={{ fontSize: "1.1rem" }}>My Teams</Typography>
         <Button
           variant="contained"

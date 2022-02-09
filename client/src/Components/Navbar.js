@@ -9,8 +9,14 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-export default function Navbar({ setCurrentUser, currentUser }) {
-  const [value, setValue] = React.useState(0);
+import "./Navbar.css";
+
+export default function Navbar({
+  setCurrentUser,
+  currentUser,
+  value,
+  setValue,
+}) {
   let history = useHistory();
 
   const handleChange = (event, newValue) => {
@@ -28,45 +34,60 @@ export default function Navbar({ setCurrentUser, currentUser }) {
 
   return (
     <Tabs
+      variant="fullWidth"
       value={value}
       onChange={handleChange}
       aria-label="icon label tabs example"
-      style={{ textAlign: "center", marginBottom: "2vh" }}
+      style={{ marginBottom: "2vh" }}
       centered
     >
       <Tab
-        style={{ position: "absolute", right: "5px" }}
-        icon={<LogoutIcon />}
-        label="Log Out"
-        onClick={handlelogout}
+        className="tab-left"
+        icon={<PersonPinIcon />}
+        label={currentUser.first_name}
+        disabled
       />
       <Tab
         icon={<DashboardIcon />}
         label="Dashboard"
+        value="two"
         onClick={() => history.push("/dashboard")}
       />
       <Tab
         icon={<ConfirmationNumberIcon />}
         label="Tickets"
+        value="three"
         onClick={() => history.push("/tickets")}
       />
       <Tab
         icon={<AccountTreeIcon />}
         label="Projects"
+        value="four"
         onClick={() => history.push("/projects")}
       />
       <Tab
         icon={<GroupWorkIcon />}
         label="Teams"
+        value="fove"
         onClick={() => history.push("/teams")}
       />
 
       <Tab
-        icon={<PersonPinIcon />}
-        style={{ position: "absolute", left: "5px" }}
-        label={currentUser.first_name}
-        disabled
+        className="tab-right"
+        icon={<LogoutIcon />}
+        value="one"
+        label="Log Out"
+        onClick={handlelogout}
       />
     </Tabs>
   );
 }
+
+const style = {
+  leftIcon: {
+    "@media and screen (max-width: 1000px)": {
+      position: "absolute",
+      left: "5px",
+    },
+  },
+};

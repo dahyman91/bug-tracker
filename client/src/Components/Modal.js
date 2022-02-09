@@ -16,12 +16,15 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
-  height: 650,
+  width: "90vw",
+  height: "90vh",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  "@media screen and (max-width: 700px)": {
+    height: "98vh",
+  },
 };
 
 export default function BasicModal({ open, setOpen, currentUser }) {
@@ -39,6 +42,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
       {!tickets && (
         <Modal
           open={open}
+          // style={{ width: "100px" }}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -84,9 +88,8 @@ export default function BasicModal({ open, setOpen, currentUser }) {
             <Box
               sx={{
                 margin: "auto",
-                maxWidth: 300,
+                width: 300,
                 bgcolor: "background.paper",
-                // color: "blue",
               }}
             >
               <List>
@@ -94,7 +97,7 @@ export default function BasicModal({ open, setOpen, currentUser }) {
                   <ListItem onClick={() => history.push("/create-team")}>
                     <ListItemButton>
                       <ListItemIcon>
-                        <CheckCircleOutlineIcon style={{ color: "blue" }} />
+                        <CheckCircleOutlineIcon />
                       </ListItemIcon>
                       <ListItemText primary="1: You are on a team!" />
                     </ListItemButton>

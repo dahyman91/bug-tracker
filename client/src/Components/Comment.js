@@ -29,7 +29,14 @@ function Comment({ comment }) {
   }
 
   return (
-    <Paper style={{ width: "30%", padding: "40px 20px", margin: "auto" }}>
+    <Paper
+      style={{
+        width: "50vw",
+        padding: "40px 20px",
+        // textAlign: "center",
+        margin: "0 auto 10px",
+      }}
+    >
       <Grid container wrap="nowrap" spacing={2}>
         <Grid justifyContent="left" item xs zeroMinWidth>
           <h4 style={{ margin: 0, textAlign: "left" }}>{name}</h4>

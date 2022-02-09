@@ -72,12 +72,12 @@ function Ticket({ currentUser }) {
   }
 
   function deleteTicket(id) {
-    fetch(`/api/teams/${id}`, {
+    fetch(`/api/tickets/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
       },
-    });
+    }).then(() => history.push("/tickets"));
   }
 
   function getTimeSincePost(postedDate) {
@@ -145,12 +145,12 @@ function Ticket({ currentUser }) {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item xs={4}>
+            <Grid item xs={10} md={6}>
               <Stack
                 component="form"
                 sx={{
-                  width: "50ch",
-                  m: "auto",
+                  width: "90%",
+                  m: "0 auto 15px",
                 }}
                 spacing={2}
                 noValidate
@@ -205,11 +205,11 @@ function Ticket({ currentUser }) {
                 />
               </Stack>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={10} md={6}>
               <Stack
                 component="form"
                 sx={{
-                  width: "50ch",
+                  width: "90%",
                   m: "auto",
                 }}
                 spacing={2}
@@ -312,7 +312,7 @@ function Ticket({ currentUser }) {
                     return option;
                   }}
                   renderOption={(props, option) => <li {...props}>{option}</li>}
-                  sx={{ width: "50ch" }}
+                  sx={{ width: "100%" }}
                   freeSolo
                   renderInput={(params) => (
                     <TextField {...params} label="Choose or Create Category" />
@@ -350,8 +350,6 @@ function Ticket({ currentUser }) {
         <div
           style={{
             padding: "20px",
-            // display: "flex",
-            // justifyContent: "space-around",
             textAlign: "center",
             width: "100%",
           }}
@@ -400,7 +398,7 @@ function Ticket({ currentUser }) {
       </>
       <h3 style={{ textAlign: "center", padding: "20px" }}>Comments</h3>
       <div style={{ width: "100%", display: "flex" }}>
-        <FormControl style={{ margin: "auto", width: "30%" }}>
+        <FormControl style={{ margin: "auto", width: "40vw" }}>
           <TextField
             fullWidth
             value={newComment}
@@ -409,7 +407,7 @@ function Ticket({ currentUser }) {
           <Button
             variant="contained"
             type="submit"
-            style={{ width: "40%", margin: "20px auto" }}
+            style={{ margin: "20px auto" }}
             onClick={() => {
               if (newComment.length) {
                 let fullComment = {

@@ -8,7 +8,6 @@ import { Select, MenuItem, Typography } from "@mui/material";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import { FormHelperText } from "@mui/material";
 import { Grid } from "@mui/material";
 
 function CreateTicket({ currentUser, setCurrentUser }) {
@@ -125,7 +124,7 @@ function CreateTicket({ currentUser, setCurrentUser }) {
             onChange={(e) => setTicketName(e.target.value)}
             value={ticketName}
           />
-          <FormControl fullWidth>
+          <FormControl>
             <InputLabel id="user-select-label">Project</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -295,8 +294,13 @@ function CreateTicket({ currentUser, setCurrentUser }) {
         <Typography style={{ textAlign: "center", padding: "10px" }}>
           Review & Submit Ticket
         </Typography>
-        <Grid container style={{ margin: "auto 0" }} spacing={3}>
-          <Grid item xs={6}>
+        <Grid
+          container
+          sm={12}
+          style={{ margin: "auto 0", width: "100%" }}
+          spacing={3}
+        >
+          <Grid item sm={6} xs={12}>
             <Stack
               component="form"
               sx={{
@@ -363,7 +367,7 @@ function CreateTicket({ currentUser, setCurrentUser }) {
               )}
             </Stack>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item sm={6} md={6} xs={12}>
             <Stack
               component="form"
               sx={{
@@ -381,7 +385,6 @@ function CreateTicket({ currentUser, setCurrentUser }) {
                   if (typeof newValue === "string") {
                     setCategory(newValue);
                   } else if (newValue && newValue.inputValue) {
-                    // Create a new value from the user input
                     setCategory(newValue);
                   } else {
                     setCategory(newValue);
@@ -389,16 +392,13 @@ function CreateTicket({ currentUser, setCurrentUser }) {
                 }}
                 filterOptions={(options, params) => {
                   const filtered = filter(options, params);
-
                   const { inputValue } = params;
-                  // Suggest the creation of a new value
                   const isExisting = options.some(
                     (option) => inputValue === option.title
                   );
                   if (inputValue !== "" && !isExisting) {
                     filtered.push(inputValue);
                   }
-
                   return filtered;
                 }}
                 selectOnFocus
@@ -407,15 +407,12 @@ function CreateTicket({ currentUser, setCurrentUser }) {
                 id="free-solo-with-text-demo"
                 options={categories}
                 getOptionLabel={(option) => {
-                  // Value selected with enter, right from the input
                   if (typeof option === "string") {
                     return option;
                   }
-                  // Add "xxx" option created dynamically
                   if (option.inputValue) {
                     return option.inputValue;
                   }
-                  // Regular option
                   return option;
                 }}
                 renderOption={(props, option) => <li {...props}>{option}</li>}
@@ -424,7 +421,7 @@ function CreateTicket({ currentUser, setCurrentUser }) {
                   <TextField {...params} label="Choose or Create Category" />
                 )}
               />
-              <FormControl>
+              <FormControl fullWidth>
                 <InputLabel htmlFor="status-select">Status</InputLabel>
                 <Select
                   disabled
@@ -468,9 +465,9 @@ function CreateTicket({ currentUser, setCurrentUser }) {
             </Stack>
           </Grid>
         </Grid>
-        <div style={{ display: "flex", padding: "20px" }}>
+        <div style={{ width: "105%", display: "flex", padding: "20px 0" }}>
           <TextField
-            style={{ width: "50%", margin: "auto" }}
+            style={{ width: "40ch", margin: "auto" }}
             disabled
             id="outlined-multiline-flexible"
             label="Ticket Description"

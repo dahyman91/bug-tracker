@@ -44,7 +44,12 @@ export default function SideNav({ currentUser, setCurrentUser }) {
       {currentUser && (
         <SpeedDial
           ariaLabel="SpeedDial basic example"
-          sx={{ position: "absolute", bottom: "50%", left: 25 }}
+          style={{
+            position: "sticky",
+            bottom: "25px",
+            float: "left",
+            paddingLeft: "25px",
+          }}
           icon={<SpeedDialIcon />}
         >
           {actions.map((action) => (

@@ -238,7 +238,7 @@ function Dashboard({ currentUser, setCurrentUser, open, setOpen }) {
       <LinearProgress />
     </Box>
   ) : (
-    <div>
+    <div style={{ height: "100vh" }}>
       {currentUser?.tickets ?? (
         <BasicModal currentUser={currentUser} open={open} setOpen={setOpen} />
       )}

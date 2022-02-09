@@ -47,12 +47,12 @@ function CreateProject({ currentUser, setCurrentUser }) {
       field: "role",
       headerName: "Role",
       type: "string",
-      width: 130,
+      width: 190,
     },
-    { field: "first_name", headerName: "First name", width: 100 },
-    { field: "last_name", headerName: "Last name", width: 100 },
+    { field: "first_name", headerName: "First name", width: 190 },
+    { field: "last_name", headerName: "Last name", width: 190 },
     { field: "email", headerName: "Email", width: 190 },
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", width: 190 },
   ];
 
   function firstStep() {
@@ -118,7 +118,9 @@ function CreateProject({ currentUser, setCurrentUser }) {
   function secondStep() {
     return (
       <>
-        <Typography style={{ textAlign: "center", padding: "1%" }}>
+        <Typography
+          style={{ textAlign: "center", padding: "1%", marginBottom: "10px" }}
+        >
           Assign Team Members Roles
         </Typography>
         {users && (
@@ -130,7 +132,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
                 getOptionLabel={(option) =>
                   `${option.first_name} ${option.last_name}`
                 }
-                style={{ width: 300 }}
+                style={{ width: "35vw" }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -152,7 +154,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
               disableClearable
               id="combo-box-demo"
               options={roleOptions}
-              style={{ width: 300 }}
+              style={{ width: "35vw" }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -173,7 +175,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
               style={{
                 margin: "auto",
                 padding: "10px",
-                width: "20%",
+                // width: "20%",
               }}
               onClick={() => {
                 const updatedRoles = roles.map((obj) => {
@@ -195,7 +197,7 @@ function CreateProject({ currentUser, setCurrentUser }) {
             columns={columns}
             rows={roleAssignments}
             checkboxSelection={false}
-            width="60%"
+            // width="90%"
           />
         )}
       </>
@@ -216,15 +218,20 @@ function CreateProject({ currentUser, setCurrentUser }) {
                 </Typography>
               </Box>
             ) : (
-              <Box sx={{ flexGrow: 1, width: "100%" }}>
+              <Box sx={{ flexGrow: 1, width: "90vw", margin: "auto" }}>
                 <Typography style={{ textAlign: "center" }}>
                   Review & Submit Project
                 </Typography>
-                <Grid style={{ margin: "0 auto" }} container spacing={8}>
-                  <Grid textAlign="center" item>
+                <Grid
+                  style={{ width: "100%", margin: "auto" }}
+                  container
+                  spacing={1}
+                >
+                  <Grid xs={10} md={6} style={{}} item>
                     <Stack
+                      style={{ width: "80%", margin: "auto" }}
                       component="form"
-                      spacing={2}
+                      spacing={1}
                       noValidate
                       autoComplete="off"
                     >
@@ -254,12 +261,12 @@ function CreateProject({ currentUser, setCurrentUser }) {
                       />
                     </Stack>
                   </Grid>
-                  <Grid textAlign="center" item style={{ width: "55%" }}>
+                  <Grid xs={10} md={6} textAlign="center" item>
                     <DataTable
+                      style={{ width: "80%", margin: "auto" }}
                       columns={columns}
                       rows={roleAssignments}
                       checkboxSelection={false}
-                      // width="52%"
                     />
                   </Grid>
                 </Grid>

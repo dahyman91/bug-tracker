@@ -28,6 +28,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [open, setOpen] = useState(true);
+  const [value, setValue] = useState(0);
 
   const theme = createTheme({
     palette: {
@@ -85,6 +86,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <CreateTeam currentUser={currentUser} />
               <SideNav
@@ -96,6 +99,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <CreateProject
                 currentUser={currentUser}
@@ -110,6 +115,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <CreateTicket
                 setCurrentUser={setCurrentUser}
@@ -127,6 +134,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <Dashboard
                 currentUser={currentUser}
@@ -143,6 +152,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <Tickets
                 setCurrentUser={setCurrentUser}
@@ -157,6 +168,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <Teams
                 setCurrentUser={setCurrentUser}
@@ -171,6 +184,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <Projects
                 currentUser={currentUser}
@@ -188,6 +203,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <Project currentUser={currentUser} />
               <SideNav
@@ -200,6 +217,8 @@ function App() {
               <Navbar
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
+                value={value}
+                setValue={setValue}
               />
               <Ticket currentUser={currentUser} />
               <SideNav

@@ -5,7 +5,6 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Paper } from "@mui/material";
 
 export default function AddItemStepper({
   steps,
@@ -72,7 +71,7 @@ export default function AddItemStepper({
   }
 
   return (
-    <Box sx={{ width: "70%", margin: "auto" }}>
+    <Box sx={{ height: "100vh", width: "90%", margin: "auto" }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};

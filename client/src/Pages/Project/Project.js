@@ -82,7 +82,7 @@ function Project({ currentUser }) {
     {
       field: "action",
       headerName: "Delete Role",
-      width: 150,
+      width: 190,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e) => {
@@ -116,13 +116,13 @@ function Project({ currentUser }) {
         return <Button onClick={onClick}>Remove</Button>;
       },
     },
-    { field: "first_name", headerName: "First name", width: 130 },
-    { field: "last_name", headerName: "Last name", width: 130 },
+    { field: "first_name", headerName: "First name", width: 190 },
+    { field: "last_name", headerName: "Last name", width: 190 },
     {
       field: "role",
       headerName: "Role",
       type: "string",
-      width: 130,
+      width: 170,
     },
     { field: "email", headerName: "Email", width: 190 },
   ];
@@ -204,7 +204,13 @@ function Project({ currentUser }) {
                 )}
               </Typography>
             </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: "15px",
+              }}
+            >
               <Button
                 variant="contained"
                 onClick={() => history.push("/create-ticket")}
@@ -239,18 +245,60 @@ function Project({ currentUser }) {
           </>
           {users && userRole === "Project Lead" && (
             <>
+              <Grid item>
+                <Stack
+                  style={{ margin: "auto", width: "80%", marginBottom: "15px" }}
+                  component="form"
+                  spacing={2}
+                  noValidate
+                  autoComplete="off"
+                >
+                  {project && (
+                    <TextField
+                      id="outlined-basic"
+                      label="Project Name"
+                      variant="outlined"
+                      value={project.name}
+                      disabled
+                    />
+                  )}
+                  {project && (
+                    <TextField
+                      id="outlined-multiline-flexible"
+                      label="Team Name"
+                      value={project.team}
+                      multiline
+                      rows={1}
+                      disabled
+                    />
+                  )}
+
+                  {project && (
+                    <TextField
+                      id="outlined-multiline-flexible"
+                      label="Project Description"
+                      value={project.description}
+                      multiline
+                      rows={1}
+                      disabled
+                    />
+                  )}
+                </Stack>
+              </Grid>
               <Typography style={{ textAlign: "center", padding: "5px" }}>
                 Update & Add Roles
               </Typography>
-              <Box justifyContent="center" style={{ display: "flex" }}>
-                <FormControl>
+              <Box
+                justifyContent="center"
+                style={{ width: "100vw", display: "flex" }}
+              >
+                <FormControl style={{ width: "40%" }}>
                   <Autocomplete
                     id="combo-box-demo"
                     options={users}
                     getOptionLabel={(option) =>
                       `${option.first_name} ${option.last_name}`
                     }
-                    style={{ width: 300 }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -272,7 +320,7 @@ function Project({ currentUser }) {
                   disableClearable
                   id="combo-box-demo"
                   options={roleOptions}
-                  style={{ width: 300 }}
+                  style={{ width: "40%" }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -313,62 +361,19 @@ function Project({ currentUser }) {
               flexGrow: 1,
               width: "80%",
               margin: "auto",
-
               height: "100%",
-              // display: "flex",
-              justifyContent: "space-between",
             }}
           >
-            <Grid style={{ margin: "auto" }} container spacing={3}>
-              <Grid item>
-                <Stack
-                  component="form"
-                  spacing={2}
-                  noValidate
-                  autoComplete="off"
-                >
-                  {project && (
-                    <TextField
-                      id="outlined-basic"
-                      label="Project Name"
-                      variant="outlined"
-                      value={project.name}
-                      disabled
-                    />
-                  )}
-                  {project && (
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Team Name"
-                      value={project.team}
-                      multiline
-                      rows={1}
-                      disabled
-                    />
-                  )}
-
-                  {project && (
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Project Description"
-                      value={project.description}
-                      multiline
-                      rows={4}
-                      disabled
-                    />
-                  )}
-                </Stack>
-              </Grid>
+            <Grid style={{}} container spacing={3}>
               <Grid
                 textAlign="center"
                 item
-                style={{ width: "65%", margin: "auto" }}
+                style={{ width: "100%", margin: "auto" }}
               >
                 <DataTable
                   columns={roleColumns}
                   rows={detailRoles}
                   pageSize={4}
-                  // rowsPerPageOptions={[4]}
                   minimum
                   checkboxSelection={false}
                 />
@@ -379,12 +384,25 @@ function Project({ currentUser }) {
             sx={{
               flexGrow: 1,
               width: "80%",
-              margin: "5vh auto",
+              margin: " auto",
               justifyContent: "space-between",
             }}
           >
-            {ticketRows[0] && (
-              <DataTable columns={ticketColumns} rows={ticketRows}></DataTable>
+            {ticketRows[0] ? (
+              <>
+                <Typography
+                  style={{ textAlign: "center", marginBottom: "15px" }}
+                >
+                  This Project's Tickets
+                </Typography>
+                <DataTable columns={ticketColumns} rows={ticketRows} />
+              </>
+            ) : (
+              <>
+                <Typography style={{ textAlign: "center" }}>
+                  No Tickets Added to this Project Yet
+                </Typography>
+              </>
             )}
           </Box>
         </>

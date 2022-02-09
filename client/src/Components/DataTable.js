@@ -11,7 +11,7 @@ export default function DataTable({
 }) {
   return (
     <div style={{ margin: "auto", height: 300, width: width }}>
-      <div style={{ display: "flex", height: "50%" }}>
+      <div style={{ display: "flex" }}>
         <div style={{ flexGrow: 1 }}>
           <DataGrid
             rows={rows}

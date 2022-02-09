@@ -107,19 +107,26 @@ function CreateTeam({ currentUser, setCurrentUser }) {
         </Typography>
 
         <Grid
-          style={{ width: "90%", margin: "0 auto" }}
+          style={{ width: "90%", margin: "auto" }}
           container
-          columns={{ md: 2, sm: 2, lg: 12 }}
-          spacing={{ md: 3, sm: 2, lg: 2 }}
+          columns={{ md: 12, sm: 12, lg: 12 }}
+          spacing={{ md: 12, sm: 2, lg: 2 }}
         >
-          <Grid textAlign="center" item xs={6}>
-            <FormControl>
+          <Grid
+            style={{ width: "100%" }}
+            // textAlign="center"
+
+            item
+            xs={6}
+          >
+            <FormControl style={{ textAlign: "center" }}>
               <InputLabel shrink htmlFor="select-multiple-native">
                 Available Users
               </InputLabel>
               <Select
-                sx={{ width: "50ch", height: "13ch" }}
+                sx={{ width: "100%", height: "13ch" }}
                 multiple
+                centered
                 native
                 label="Available Users"
                 inputProps={{
@@ -157,7 +164,7 @@ function CreateTeam({ currentUser, setCurrentUser }) {
                 Selected Users
               </InputLabel>
               <Select
-                sx={{ width: "50ch", height: "13ch" }}
+                sx={{ width: "100%", height: "13ch" }}
                 multiple
                 native
                 label="Selected Users"
@@ -199,15 +206,14 @@ function CreateTeam({ currentUser, setCurrentUser }) {
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Typography textAlign="center">Review Team Details & Submit</Typography>
-        <Grid style={{ width: "50%", margin: "0 auto" }} container spacing={3}>
-          <Grid textAlign="center" item xs={6}>
+        <Grid style={{ margin: "0 auto" }} container rowSpacing={1}>
+          <Grid item xs={6}>
             <Stack
               component="form"
-              sx={
-                {
-                  // width: "40ch",
-                }
-              }
+              sx={{
+                width: "35vw",
+                margin: "auto",
+              }}
               spacing={2}
               noValidate
               autoComplete="off"
@@ -230,13 +236,14 @@ function CreateTeam({ currentUser, setCurrentUser }) {
               />
             </Stack>
           </Grid>
-          <Grid textAlign="center" item xs={6}>
+          <Grid item style={{ textAlign: "center" }} xs={6}>
             <FormControl disabled>
               <InputLabel shrink htmlFor="select-multiple-native">
                 Selected Users
               </InputLabel>
               <Select
-                sx={{ width: "30ch" }}
+                style={{ width: "35vw" }}
+                // sx={{ textAlign: "center" }}
                 multiple
                 native
                 label="Selected Users"

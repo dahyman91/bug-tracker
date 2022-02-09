@@ -8,7 +8,10 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 import ConfirmationModal from "./ConfirmationModal";
 
 function TeamAccordian({
@@ -63,7 +66,7 @@ function TeamAccordian({
         </AccordionSummary>
         {adminTeams.includes(team.id) && (
           <Typography style={{}}>
-            <em>You Have Admin Priviledges</em>
+            <em>You Have Admin Privileges</em>
           </Typography>
         )}
         <AccordionDetails style={{}}>
@@ -84,62 +87,77 @@ function TeamAccordian({
                   <ListItem
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "14px" }}>
-                      {" "}
-                      <b>
-                        {user.first_name} {user.last_name}
-                      </b>{" "}
-                      (email: {user.email})
-                      <span>
-                        <b>
-                          <em>{isAdminArr[user.id] && " Admin"}</em>
-                        </b>
-                      </span>
-                    </Typography>
+                    {adminTeams.includes(team.id) && (
+                      <div style={{ display: "flex" }}>
+                        <Typography style={{ fontSize: "14px" }}>
+                          {" "}
+                          <b>
+                            {user.first_name} {user.last_name}
+                          </b>{" "}
+                          (email: {user.email})
+                          <span>
+                            <b>
+                              <em>{isAdminArr[user.id] && " Admin"}</em>
+                            </b>
+                          </span>
+                          {isAdminArr[user.id] ? (
+                            <Tooltip title="Remove Admin Privileges">
+                              <IconButton
+                                style={{
+                                  backgroundColor: "white",
+                                  color: "#C95036",
+                                }}
+                                variant="contained"
+                                onClick={() => {
+                                  setIsAdminArr((isAdminArr) => ({
+                                    ...isAdminArr,
+                                    [user.id]: false,
+                                  }));
+                                  fetch(
+                                    `/api/remove_admin/${user.id}/${team.id}`
+                                  );
+                                }}
+                              >
+                                <RemoveIcon />
+                              </IconButton>
+                            </Tooltip>
+                          ) : (
+                            <Tooltip title="Give Admin Privileges">
+                              <IconButton
+                                variant="contained"
+                                onClick={() => {
+                                  setIsAdminArr((isAdminArr) => ({
+                                    ...isAdminArr,
+                                    [user.id]: true,
+                                  }));
+                                  fetch(
+                                    `/api/make_admin/${user.id}/${team.id}`
+                                  );
+                                }}
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            </Tooltip>
+                          )}
+                        </Typography>
+                      </div>
+                    )}
+
                     {adminTeams.includes(team.id) && (
                       <div>
-                        {isAdminArr[user.id] ? (
-                          <Button
+                        <Tooltip title="Remove User From Team">
+                          <IconButton
                             style={{
+                              marginLeft: "10px",
                               backgroundColor: "white",
                               color: "#C95036",
                             }}
                             variant="contained"
-                            onClick={() => {
-                              setIsAdminArr((isAdminArr) => ({
-                                ...isAdminArr,
-                                [user.id]: false,
-                              }));
-                              fetch(`/api/remove_admin/${user.id}/${team.id}`);
-                            }}
+                            onClick={() => handleRemoveMember(user.id)}
                           >
-                            remove admin priviledges
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            onClick={() => {
-                              setIsAdminArr((isAdminArr) => ({
-                                ...isAdminArr,
-                                [user.id]: true,
-                              }));
-                              fetch(`/api/make_admin/${user.id}/${team.id}`);
-                            }}
-                          >
-                            make admin
-                          </Button>
-                        )}
-                        <Button
-                          style={{
-                            marginLeft: "10px",
-                            backgroundColor: "white",
-                            color: "#C95036",
-                          }}
-                          variant="contained"
-                          onClick={() => handleRemoveMember(user.id)}
-                        >
-                          remove member
-                        </Button>
+                            <DeleteForeverIcon />
+                          </IconButton>
+                        </Tooltip>
                       </div>
                     )}
                   </ListItem>
@@ -166,7 +184,7 @@ function TeamAccordian({
                 width: "100%",
                 paddingRight: "16px",
                 marginTop: "10px",
-                justifyContent: "right",
+                justifyContent: "center",
               }}
             >
               <Button
@@ -176,7 +194,7 @@ function TeamAccordian({
               >
                 Add Project
               </Button>
-              <Button
+              {/* <Button
                 style={{
                   marginRight: "10px",
                   color: "#C95036",
@@ -186,13 +204,13 @@ function TeamAccordian({
                 onClick={() => handleRemoveTeam(team.id)}
               >
                 Leave Team
-              </Button>
+              </Button> */}
               {adminTeams.includes(team.id) && (
                 <Button
                   style={{
                     backgroundColor: "white",
                     color: "#C95036",
-                    width: "20%",
+                    // width: "20%",
                   }}
                   variant="contained"
                   onClick={() => setOpen(true)}
