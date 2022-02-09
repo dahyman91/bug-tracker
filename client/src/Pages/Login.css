@@ -1,0 +1,16 @@
+.login-container {
+  width: 80%;
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 800px) {
+  .login-container {
+    flex-direction: column;
+    top: 45%;
+    gap: 30px;
+  }
+}

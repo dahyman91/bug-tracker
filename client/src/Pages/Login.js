@@ -12,19 +12,28 @@ import { FormControl } from "@mui/material";
 import { Stack, Alert } from "@mui/material";
 import { CssBaseline } from "@material-ui/core";
 
+import "./Login.css";
+
 function Copyright() {
   return (
-    <Typography variant="body2" align="center">
+    <Typography
+      style={{
+        position: "absolute",
+        bottom: "0px",
+        left: "50%",
+        transform: "translateX(-50%)",
+      }}
+      variant="body2"
+      align="center"
+    >
       {"Copyright © "}
-      <Link color="#2F7B32" href="https://www.linkedin.com/in/dan-hyman-dev/">
+      <Link color="#2F7B32" href="https://dan-hyman.com">
         Dan Hyman
       </Link>{" "}
       {new Date().getFullYear()}
     </Typography>
   );
 }
-
-// const theme = createTheme();
 
 export default function LogIn({ setCurrentUser, currentUser }) {
   let history = useHistory();
@@ -74,86 +83,78 @@ export default function LogIn({ setCurrentUser, currentUser }) {
           </Stack>
         </div>
       )}
-      <Grid style={{ width: "80%", margin: "auto" }} container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <LandingImg width={"100%"} height={"500px"} />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl>
-            <Box
-              sx={{
-                width: "80%",
-                marginLeft: "auto",
-                marginRight: "auto",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+      <div className="login-container" container spacing={2}>
+        <LandingImg className="landing-img" width="100%" />
+
+        <FormControl className="sign-in-form-container">
+          <Box
+            className="sign-in-form"
+            sx={{
+              width: "80%",
+              margin: "auto",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              style={{ marginTop: "2vh" }}
+              component="h1"
+              variant="h5"
             >
-              <Typography
-                style={{ marginTop: "2vh" }}
-                component="h1"
-                variant="h5"
+              Sign In
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
-              </Typography>
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{ mt: 1 }}
-              >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-
-                {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </Button>
-                <Grid container>
-                  <Grid style={{ margin: "auto" }} item>
-                    <Link href="/" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
+              </Button>
+              <Grid container>
+                <Grid style={{ margin: "auto" }} item>
+                  <Link href="/" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
                 </Grid>
-              </Box>
+              </Grid>
             </Box>
-          </FormControl>
-        </Grid>
-      </Grid>
+          </Box>
+        </FormControl>
+      </div>
       {/* <CssBaseline /> */}
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Copyright />
     </>
   );
 }
