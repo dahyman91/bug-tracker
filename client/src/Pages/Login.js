@@ -74,19 +74,14 @@ export default function LogIn({ setCurrentUser, currentUser }) {
           </Stack>
         </div>
       )}
-      <Grid
-        style={{ marginTop: "10%", width: "80%", margin: "5% auto 0%" }}
-        container
-        spacing={2}
-      >
-        <Grid item xs={6}>
-          <LandingImg width={"85%"} height={"500px"} />
+      <Grid style={{ width: "80%", margin: "auto" }} container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <LandingImg width={"100%"} height={"500px"} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <FormControl>
             <Box
               sx={{
-                marginTop: 10,
                 width: "80%",
                 marginLeft: "auto",
                 marginRight: "auto",
@@ -157,7 +152,7 @@ export default function LogIn({ setCurrentUser, currentUser }) {
           </FormControl>
         </Grid>
       </Grid>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </>
   );
